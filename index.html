@@ -1,4 +1,3 @@
-
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
@@ -24,7 +23,7 @@
 .badge.pla{background:#EAF3DE;color:#3B6D11}.badge.petg{background:#E6F1FB;color:#185FA5}
 .badge.abs{background:#FAECE7;color:#993C1D}.badge.tpu{background:#FBEAF0;color:#993556}
 .badge.asa{background:#FAEEDA;color:#854F0B}.badge.pa{background:#EEEDFE;color:#3C3489}
-.badge.cf{background:#F1EFE8;color:#444441}.badge.other{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.badge.cf{background:#F1EFE8;color:#444441}.badge.pc{background:#EBE4F5;color:#553B82}.badge.pva{background:#FFF4E5;color:#995C00}.badge.hips{background:#E0F7FA;color:#006064}.badge.other{background:var(--color-background-secondary);color:var(--color-text-secondary)}
 .badge.in{background:#E1F5EE;color:#0F6E56}.badge.out{background:#FCEBEB;color:#A32D2D}
 .badge.wish{background:#E6F1FB;color:#185FA5}
 .count-bar{font-size:12px;color:var(--color-text-secondary);margin-bottom:0.6rem}
@@ -91,7 +90,7 @@
 @media(max-width:460px){.form-grid{grid-template-columns:1fr}}
 </style>
 
-<h2 class="sr-only">Filament shop browser with color palette filter, inventory tracker, and wishlist — 150+ filaments across 20+ brands</h2>
+<h2 class="sr-only">Filament shop browser with color palette filter, inventory tracker, and wishlist</h2>
 
 <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:9px;padding:1.1rem 0 .75rem">
   <div>
@@ -119,7 +118,7 @@
     <select id="sBrand" onchange="renderShop()"><option value="">All brands</option></select>
     <select id="sType" onchange="renderShop()">
       <option value="">All types</option>
-      <option>PLA</option><option>PETG</option><option>ABS</option><option>TPU</option><option>ASA</option><option>PA</option><option>CF</option><option>Other</option>
+      <option>PLA</option><option>PETG</option><option>ABS</option><option>TPU</option><option>ASA</option><option>PA</option><option>CF</option><option>PC</option><option>PVA</option><option>HIPS</option><option>Other</option>
     </select>
     <select id="sAvail" onchange="renderShop()">
       <option value="">All availability</option>
@@ -159,7 +158,7 @@
     <select id="iBrand" onchange="renderInventory()"><option value="">All brands</option></select>
     <select id="iType" onchange="renderInventory()">
       <option value="">All types</option>
-      <option>PLA</option><option>PETG</option><option>ABS</option><option>TPU</option><option>ASA</option><option>PA</option><option>CF</option><option>Other</option>
+      <option>PLA</option><option>PETG</option><option>ABS</option><option>TPU</option><option>ASA</option><option>PA</option><option>CF</option><option>PC</option><option>PVA</option><option>HIPS</option><option>Other</option>
     </select>
     <select id="iStock" onchange="renderInventory()">
       <option value="">All stock</option>
@@ -203,7 +202,7 @@
       </div>
       <div class="fg" id="cbRow" style="display:none"><label>Custom brand</label><input id="fBrandCustom" type="text"/></div>
       <div class="fg"><label>Type</label>
-        <select id="fTypeIn"><option>PLA</option><option>PETG</option><option>ABS</option><option>TPU</option><option>ASA</option><option>PA</option><option>CF</option><option>Other</option></select>
+        <select id="fTypeIn"><option>PLA</option><option>PETG</option><option>ABS</option><option>TPU</option><option>ASA</option><option>PA</option><option>CF</option><option>PC</option><option>PVA</option><option>HIPS</option><option>Other</option></select>
       </div>
       <div class="fg"><label>Color name</label><input id="fColorName" type="text" placeholder="e.g. Jade White"/></div>
       <div class="fg"><label>Color swatch</label><input id="fColorHex" type="color" value="#ffffff" style="height:32px;padding:2px 4px;cursor:pointer"/></div>
@@ -223,7 +222,7 @@
 </div>
 
 <script>
-const SK='fil_inv_v4', WK='fil_wish_v4';
+const SK='fil_inv_v5', WK='fil_wish_v5';
 let spools=[], wishlist=[], editId=null, selColorHex=null, selColorName='';
 
 const COLOR_FAMILIES = [
@@ -258,7 +257,7 @@ const COLOR_FAMILIES = [
     {hex:'#8b4513',label:'Saddle brown'},{hex:'#a0522d',label:'Sienna'},{hex:'#c8a882',label:'Tan'},{hex:'#d4a37a',label:'Wood'},{hex:'#6b3a2a',label:'Dark wood'}
   ]},
   {name:'Specialty', swatches:[
-    {hex:'#c0c0c0',label:'Silver metallic'},{hex:'#d4af37',label:'Gold metallic'},{hex:'#b76e79',label:'Rose gold'},{hex:'#d0e8f2',label:'Transparent'},{hex:'#ddeef8',label:'Clear PETG'},{hex:'#e8e8ff',label:'Glow in dark'},{hex:'#a8c5da',label:'Translucent blue'},{hex:'#e8c5da',label:'Translucent pink'}
+    {hex:'#c0c0c0',label:'Silver metallic'},{hex:'#d4af37',label:'Gold metallic'},{hex:'#b76e79',label:'Rose gold'},{hex:'#d0e8f2',label:'Transparent'},{hex:'#ddeef8',label:'Clear'},{hex:'#e8e8ff',label:'Glow'},{hex:'#e8dcc8',label:'Natural'}
   ]}
 ];
 
@@ -269,192 +268,126 @@ function colorDist(h1,h2){const[r1,g1,b1]=hexToRgb(h1),[r2,g2,b2]=hexToRgb(h2);r
 function matchesColorFilter(itemHex){if(!selColorHex)return true;return colorDist(itemHex,selColorHex)<COLOR_DIST}
 
 const CATALOG=[
+  // Bambu Lab - Expanded Types
   {brand:'BambuLab',type:'PLA',name:'PLA Basic',color:'White',hex:'#f5f5f0',size:1000,price:24.99,inStock:true,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'PLA',name:'PLA Basic',color:'Black',hex:'#1a1a1a',size:1000,price:24.99,inStock:true,url:'https://bambulab.com'},
-  {brand:'BambuLab',type:'PLA',name:'PLA Basic',color:'Bambu Green',hex:'#5aaf6e',size:1000,price:24.99,inStock:true,url:'https://bambulab.com'},
-  {brand:'BambuLab',type:'PLA',name:'PLA Basic',color:'Sunflower Yellow',hex:'#f5c842',size:1000,price:24.99,inStock:true,url:'https://bambulab.com'},
-  {brand:'BambuLab',type:'PLA',name:'PLA Basic',color:'Crimson Red',hex:'#d63b3b',size:1000,price:24.99,inStock:false,url:'https://bambulab.com'},
-  {brand:'BambuLab',type:'PLA',name:'PLA Basic',color:'Blue',hex:'#1a6fc4',size:1000,price:24.99,inStock:true,url:'https://bambulab.com'},
-  {brand:'BambuLab',type:'PLA',name:'PLA Basic',color:'Purple',hex:'#7b2d8b',size:1000,price:24.99,inStock:true,url:'https://bambulab.com'},
-  {brand:'BambuLab',type:'PLA',name:'PLA Basic',color:'Orange',hex:'#fa6400',size:1000,price:24.99,inStock:true,url:'https://bambulab.com'},
-  {brand:'BambuLab',type:'PLA',name:'PLA Basic',color:'Pink',hex:'#ff85a1',size:1000,price:24.99,inStock:true,url:'https://bambulab.com'},
-  {brand:'BambuLab',type:'PLA',name:'PLA Basic',color:'Grey',hex:'#888780',size:1000,price:24.99,inStock:true,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'PLA',name:'PLA Matte',color:'Matte White',hex:'#f8f8f8',size:1000,price:27.99,inStock:true,url:'https://bambulab.com'},
-  {brand:'BambuLab',type:'PLA',name:'PLA Matte',color:'Matte Black',hex:'#2c2c2a',size:1000,price:27.99,inStock:true,url:'https://bambulab.com'},
-  {brand:'BambuLab',type:'PLA',name:'PLA Matte',color:'Matte Grey',hex:'#888780',size:1000,price:27.99,inStock:true,url:'https://bambulab.com'},
-  {brand:'BambuLab',type:'PLA',name:'PLA Matte',color:'Matte Blue',hex:'#3a5fa0',size:1000,price:27.99,inStock:true,url:'https://bambulab.com'},
-  {brand:'BambuLab',type:'PLA',name:'PLA Matte',color:'Matte Green',hex:'#4a7a50',size:1000,price:27.99,inStock:false,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'PLA',name:'PLA Silk',color:'Silk Gold',hex:'#d4a017',size:1000,price:29.99,inStock:true,url:'https://bambulab.com'},
-  {brand:'BambuLab',type:'PLA',name:'PLA Silk',color:'Silk Silver',hex:'#c0c0c0',size:1000,price:29.99,inStock:true,url:'https://bambulab.com'},
-  {brand:'BambuLab',type:'PLA',name:'PLA Silk',color:'Silk Copper',hex:'#b87333',size:1000,price:29.99,inStock:true,url:'https://bambulab.com'},
-  {brand:'BambuLab',type:'PLA',name:'PLA Silk',color:'Silk Rose Gold',hex:'#b76e79',size:1000,price:29.99,inStock:false,url:'https://bambulab.com'},
+  {brand:'BambuLab',type:'PLA',name:'PLA Aero',color:'White',hex:'#f8f8f8',size:1000,price:34.99,inStock:true,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'PETG',name:'PETG Basic',color:'Transparent',hex:'#d0e8f2',size:1000,price:27.99,inStock:true,url:'https://bambulab.com'},
-  {brand:'BambuLab',type:'PETG',name:'PETG Basic',color:'White',hex:'#f0f0f0',size:1000,price:27.99,inStock:true,url:'https://bambulab.com'},
-  {brand:'BambuLab',type:'PETG',name:'PETG Basic',color:'Black',hex:'#1a1a1a',size:1000,price:27.99,inStock:true,url:'https://bambulab.com'},
+  {brand:'BambuLab',type:'PETG',name:'PETG-HF',color:'Black',hex:'#1a1a1a',size:1000,price:29.99,inStock:true,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'ABS',name:'ABS',color:'White',hex:'#f5f5f0',size:1000,price:26.99,inStock:true,url:'https://bambulab.com'},
-  {brand:'BambuLab',type:'ABS',name:'ABS',color:'Black',hex:'#1a1a1a',size:1000,price:26.99,inStock:true,url:'https://bambulab.com'},
+  {brand:'BambuLab',type:'ASA',name:'ASA',color:'Black',hex:'#1a1a1a',size:1000,price:29.99,inStock:true,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'TPU',name:'TPU 95A',color:'White',hex:'#f5f5f0',size:1000,price:34.99,inStock:true,url:'https://bambulab.com'},
-  {brand:'BambuLab',type:'TPU',name:'TPU 95A',color:'Black',hex:'#1a1a1a',size:1000,price:34.99,inStock:true,url:'https://bambulab.com'},
+  {brand:'BambuLab',type:'TPU',name:'TPU 95A HF',color:'Black',hex:'#1a1a1a',size:1000,price:39.99,inStock:false,url:'https://bambulab.com'},
+  {brand:'BambuLab',type:'PC',name:'PC',color:'Transparent',hex:'#ddeef8',size:1000,price:39.99,inStock:true,url:'https://bambulab.com'},
+  {brand:'BambuLab',type:'PA',name:'PAHT-CF',color:'Carbon Black',hex:'#1e1e1e',size:1000,price:49.99,inStock:true,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'CF',name:'PLA-CF',color:'Carbon Black',hex:'#1e1e1e',size:1000,price:44.99,inStock:false,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'CF',name:'PETG-CF',color:'Carbon Black',hex:'#252525',size:1000,price:49.99,inStock:true,url:'https://bambulab.com'},
+  {brand:'BambuLab',type:'PVA',name:'PVA Support',color:'Natural',hex:'#e8dcc8',size:500,price:44.99,inStock:true,url:'https://bambulab.com'},
 
+  // Polymaker - Expanded Types
   {brand:'Polymaker',type:'PLA',name:'PolyTerra PLA',color:'Muted Blue',hex:'#5b8fa8',size:1000,price:19.99,inStock:true,url:'https://polymaker.com'},
-  {brand:'Polymaker',type:'PLA',name:'PolyTerra PLA',color:'Army Green',hex:'#4a6741',size:1000,price:19.99,inStock:true,url:'https://polymaker.com'},
-  {brand:'Polymaker',type:'PLA',name:'PolyTerra PLA',color:'Marble White',hex:'#e8e0d5',size:1000,price:19.99,inStock:true,url:'https://polymaker.com'},
-  {brand:'Polymaker',type:'PLA',name:'PolyTerra PLA',color:'Charcoal',hex:'#2c2c2a',size:1000,price:19.99,inStock:true,url:'https://polymaker.com'},
-  {brand:'Polymaker',type:'PLA',name:'PolyTerra PLA',color:'Savannah Orange',hex:'#e07020',size:1000,price:19.99,inStock:false,url:'https://polymaker.com'},
-  {brand:'Polymaker',type:'PLA',name:'PolyTerra PLA',color:'Forest Green',hex:'#2d6a4f',size:1000,price:19.99,inStock:true,url:'https://polymaker.com'},
-  {brand:'Polymaker',type:'PLA',name:'PolyTerra PLA',color:'Pebble Grey',hex:'#888780',size:1000,price:19.99,inStock:true,url:'https://polymaker.com'},
   {brand:'Polymaker',type:'PLA',name:'PolyLite PLA',color:'Red',hex:'#c0392b',size:1000,price:22.99,inStock:true,url:'https://polymaker.com'},
-  {brand:'Polymaker',type:'PLA',name:'PolyLite PLA',color:'White',hex:'#f8f8f8',size:1000,price:22.99,inStock:true,url:'https://polymaker.com'},
-  {brand:'Polymaker',type:'PLA',name:'PolyLite PLA',color:'Black',hex:'#1a1a1a',size:1000,price:22.99,inStock:true,url:'https://polymaker.com'},
-  {brand:'Polymaker',type:'PLA',name:'PolyLite PLA',color:'Blue',hex:'#1a6fc4',size:1000,price:22.99,inStock:false,url:'https://polymaker.com'},
-  {brand:'Polymaker',type:'PLA',name:'PolyLite PLA',color:'Yellow',hex:'#f5c842',size:1000,price:22.99,inStock:true,url:'https://polymaker.com'},
   {brand:'Polymaker',type:'PETG',name:'PolyLite PETG',color:'Clear',hex:'#ddeef8',size:1000,price:24.99,inStock:true,url:'https://polymaker.com'},
-  {brand:'Polymaker',type:'PETG',name:'PolyLite PETG',color:'Black',hex:'#1a1a1a',size:1000,price:24.99,inStock:true,url:'https://polymaker.com'},
   {brand:'Polymaker',type:'ASA',name:'PolyLite ASA',color:'White',hex:'#f8f8f8',size:1000,price:25.99,inStock:true,url:'https://polymaker.com'},
-  {brand:'Polymaker',type:'ASA',name:'PolyLite ASA',color:'Black',hex:'#1a1a1a',size:1000,price:25.99,inStock:true,url:'https://polymaker.com'},
-  {brand:'Polymaker',type:'ASA',name:'PolyLite ASA',color:'Red',hex:'#c0392b',size:1000,price:25.99,inStock:false,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'PC',name:'PolyMax PC',color:'White',hex:'#f8f8f8',size:750,price:39.99,inStock:true,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'PC',name:'PolyLite PC',color:'Clear',hex:'#ddeef8',size:1000,price:29.99,inStock:true,url:'https://polymaker.com'},
   {brand:'Polymaker',type:'PA',name:'PolyMide PA6-CF',color:'Black',hex:'#252525',size:500,price:44.99,inStock:false,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'PA',name:'PolyMide CoPA',color:'Natural',hex:'#e8dcc8',size:750,price:54.99,inStock:true,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'PVA',name:'PolyDissolve S1',color:'Clear',hex:'#d0e8f2',size:750,price:59.99,inStock:true,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'Other',name:'PolyCast',color:'Natural',hex:'#e8dcc8',size:750,price:49.99,inStock:true,url:'https://polymaker.com'},
 
-  {brand:'Sunlu',type:'PLA',name:'PLA+',color:'White',hex:'#f5f5f0',size:1000,price:13.99,inStock:true,url:'https://sunlu.com'},
-  {brand:'Sunlu',type:'PLA',name:'PLA+',color:'Black',hex:'#1a1a1a',size:1000,price:13.99,inStock:true,url:'https://sunlu.com'},
-  {brand:'Sunlu',type:'PLA',name:'PLA+',color:'Red',hex:'#e63946',size:1000,price:13.99,inStock:true,url:'https://sunlu.com'},
-  {brand:'Sunlu',type:'PLA',name:'PLA+',color:'Blue',hex:'#1a6fc4',size:1000,price:13.99,inStock:true,url:'https://sunlu.com'},
-  {brand:'Sunlu',type:'PLA',name:'PLA+',color:'Green',hex:'#3d8b45',size:1000,price:13.99,inStock:false,url:'https://sunlu.com'},
-  {brand:'Sunlu',type:'PLA',name:'PLA+',color:'Yellow',hex:'#f5c842',size:1000,price:13.99,inStock:true,url:'https://sunlu.com'},
-  {brand:'Sunlu',type:'PLA',name:'PLA+',color:'Orange',hex:'#fa6400',size:1000,price:13.99,inStock:true,url:'https://sunlu.com'},
-  {brand:'Sunlu',type:'PLA',name:'PLA+',color:'Grey',hex:'#888780',size:1000,price:13.99,inStock:true,url:'https://sunlu.com'},
-  {brand:'Sunlu',type:'PLA',name:'PLA Silk',color:'Gold',hex:'#d4a017',size:1000,price:16.99,inStock:true,url:'https://sunlu.com'},
-  {brand:'Sunlu',type:'PLA',name:'PLA Silk',color:'Silver',hex:'#c0c0c0',size:1000,price:16.99,inStock:true,url:'https://sunlu.com'},
-  {brand:'Sunlu',type:'PLA',name:'PLA Silk',color:'Copper',hex:'#b87333',size:1000,price:16.99,inStock:true,url:'https://sunlu.com'},
-  {brand:'Sunlu',type:'PLA',name:'PLA Silk Rainbow',color:'Rainbow',hex:'#D4537E',size:1000,price:17.99,inStock:true,url:'https://sunlu.com'},
-  {brand:'Sunlu',type:'PETG',name:'PETG',color:'Transparent',hex:'#d0e8f2',size:1000,price:16.99,inStock:true,url:'https://sunlu.com'},
-  {brand:'Sunlu',type:'PETG',name:'PETG',color:'Black',hex:'#1a1a1a',size:1000,price:16.99,inStock:true,url:'https://sunlu.com'},
-  {brand:'Sunlu',type:'TPU',name:'TPU 95A',color:'Black',hex:'#1a1a1a',size:500,price:15.99,inStock:true,url:'https://sunlu.com'},
-  {brand:'Sunlu',type:'TPU',name:'TPU 95A',color:'White',hex:'#f5f5f0',size:500,price:15.99,inStock:false,url:'https://sunlu.com'},
+  // Prusament - Expanded Types
+  {brand:'Prusament',type:'PLA',name:'PLA',color:'Galaxy Black',hex:'#1c1c2e',size:1000,price:24.99,inStock:true,url:'https://prusament.com'},
+  {brand:'Prusament',type:'PLA',name:'PLA',color:'Prusa Orange',hex:'#ff6b00',size:1000,price:22.99,inStock:true,url:'https://prusament.com'},
+  {brand:'Prusament',type:'PETG',name:'PETG',color:'Signal White',hex:'#f8f8f8',size:1000,price:24.99,inStock:true,url:'https://prusament.com'},
+  {brand:'Prusament',type:'ASA',name:'ASA',color:'Urban Grey',hex:'#808080',size:1000,price:27.99,inStock:false,url:'https://prusament.com'},
+  {brand:'Prusament',type:'PC',name:'PC Blend',color:'Jet Black',hex:'#0a0a0a',size:1000,price:49.99,inStock:true,url:'https://prusament.com'},
+  {brand:'Prusament',type:'CF',name:'PC Blend CF',color:'Carbon Black',hex:'#1e1e1e',size:800,price:59.99,inStock:true,url:'https://prusament.com'},
+  {brand:'Prusament',type:'Other',name:'PVB',color:'Transparent Yellow',hex:'#f0d060',size:500,price:29.99,inStock:true,url:'https://prusament.com'},
 
-  {brand:'Anycubic',type:'PLA',name:'PLA+',color:'White',hex:'#f5f5f0',size:1000,price:15.99,inStock:true,url:'https://anycubic.com'},
-  {brand:'Anycubic',type:'PLA',name:'PLA+',color:'Black',hex:'#1a1a1a',size:1000,price:15.99,inStock:true,url:'https://anycubic.com'},
-  {brand:'Anycubic',type:'PLA',name:'PLA+',color:'Red',hex:'#c0392b',size:1000,price:15.99,inStock:true,url:'https://anycubic.com'},
-  {brand:'Anycubic',type:'PLA',name:'PLA+',color:'Blue',hex:'#185FA5',size:1000,price:15.99,inStock:false,url:'https://anycubic.com'},
-  {brand:'Anycubic',type:'PLA',name:'PLA+',color:'Green',hex:'#3d8b45',size:1000,price:15.99,inStock:true,url:'https://anycubic.com'},
-  {brand:'Anycubic',type:'PLA',name:'PLA Silk',color:'Gold',hex:'#d4a017',size:1000,price:18.99,inStock:true,url:'https://anycubic.com'},
-  {brand:'Anycubic',type:'PLA',name:'PLA Silk',color:'Rose Gold',hex:'#b76e79',size:1000,price:18.99,inStock:true,url:'https://anycubic.com'},
-  {brand:'Anycubic',type:'ABS',name:'ABS+',color:'Black',hex:'#1a1a1a',size:1000,price:18.99,inStock:true,url:'https://anycubic.com'},
-  {brand:'Anycubic',type:'ABS',name:'ABS+',color:'White',hex:'#f5f5f0',size:1000,price:18.99,inStock:true,url:'https://anycubic.com'},
-  {brand:'Anycubic',type:'PETG',name:'PETG',color:'Clear',hex:'#ddeef8',size:1000,price:17.99,inStock:false,url:'https://anycubic.com'},
-  {brand:'Anycubic',type:'PETG',name:'PETG',color:'Black',hex:'#1a1a1a',size:1000,price:17.99,inStock:true,url:'https://anycubic.com'},
-
-  {brand:'Hatchbox',type:'PLA',name:'PLA',color:'True White',hex:'#f8f8f8',size:1000,price:19.99,inStock:true,url:'https://hatchbox3d.com'},
-  {brand:'Hatchbox',type:'PLA',name:'PLA',color:'True Black',hex:'#0a0a0a',size:1000,price:19.99,inStock:true,url:'https://hatchbox3d.com'},
-  {brand:'Hatchbox',type:'PLA',name:'PLA',color:'Galaxy Black',hex:'#1c1c2e',size:1000,price:22.99,inStock:true,url:'https://hatchbox3d.com'},
-  {brand:'Hatchbox',type:'PLA',name:'PLA',color:'Red',hex:'#e63946',size:1000,price:19.99,inStock:true,url:'https://hatchbox3d.com'},
-  {brand:'Hatchbox',type:'PLA',name:'PLA',color:'Blue',hex:'#1a6fc4',size:1000,price:19.99,inStock:false,url:'https://hatchbox3d.com'},
-  {brand:'Hatchbox',type:'PLA',name:'PLA',color:'Orange',hex:'#e8472b',size:1000,price:19.99,inStock:true,url:'https://hatchbox3d.com'},
-  {brand:'Hatchbox',type:'PLA',name:'PLA',color:'Gold',hex:'#d4a017',size:1000,price:19.99,inStock:true,url:'https://hatchbox3d.com'},
-  {brand:'Hatchbox',type:'PETG',name:'PETG',color:'Clear',hex:'#ddeef8',size:1000,price:22.99,inStock:true,url:'https://hatchbox3d.com'},
-  {brand:'Hatchbox',type:'PETG',name:'PETG',color:'Black',hex:'#1a1a1a',size:1000,price:22.99,inStock:true,url:'https://hatchbox3d.com'},
-  {brand:'Hatchbox',type:'ABS',name:'ABS',color:'White',hex:'#f5f5f0',size:1000,price:21.99,inStock:false,url:'https://hatchbox3d.com'},
-  {brand:'Hatchbox',type:'ABS',name:'ABS',color:'Black',hex:'#1a1a1a',size:1000,price:21.99,inStock:true,url:'https://hatchbox3d.com'},
-
+  // eSUN - Expanded Types
   {brand:'eSUN',type:'PLA',name:'PLA+',color:'Cold White',hex:'#eef5ff',size:1000,price:17.99,inStock:true,url:'https://esun3d.com'},
-  {brand:'eSUN',type:'PLA',name:'PLA+',color:'Black',hex:'#1a1a1a',size:1000,price:17.99,inStock:true,url:'https://esun3d.com'},
-  {brand:'eSUN',type:'PLA',name:'PLA+',color:'Red',hex:'#c0392b',size:1000,price:17.99,inStock:true,url:'https://esun3d.com'},
-  {brand:'eSUN',type:'PLA',name:'PLA+',color:'Blue',hex:'#1a6fc4',size:1000,price:17.99,inStock:false,url:'https://esun3d.com'},
-  {brand:'eSUN',type:'PLA',name:'PLA+',color:'Green',hex:'#3d8b45',size:1000,price:17.99,inStock:true,url:'https://esun3d.com'},
-  {brand:'eSUN',type:'PLA',name:'PLA+',color:'Yellow',hex:'#f0d060',size:1000,price:17.99,inStock:true,url:'https://esun3d.com'},
   {brand:'eSUN',type:'PETG',name:'PETG',color:'Solid Green',hex:'#3d8b45',size:1000,price:19.99,inStock:true,url:'https://esun3d.com'},
-  {brand:'eSUN',type:'ABS',name:'ABS+',color:'White',hex:'#f8f8f8',size:1000,price:18.99,inStock:true,url:'https://esun3d.com'},
   {brand:'eSUN',type:'ABS',name:'ABS+',color:'Black',hex:'#1a1a1a',size:1000,price:18.99,inStock:true,url:'https://esun3d.com'},
   {brand:'eSUN',type:'TPU',name:'TPU 95A',color:'Black',hex:'#1a1a1a',size:500,price:21.99,inStock:false,url:'https://esun3d.com'},
+  {brand:'eSUN',type:'PA',name:'ePA-CF',color:'Black',hex:'#1e1e1e',size:1000,price:45.99,inStock:true,url:'https://esun3d.com'},
+  {brand:'eSUN',type:'PC',name:'ePC',color:'Natural',hex:'#e8dcc8',size:1000,price:29.99,inStock:true,url:'https://esun3d.com'},
+  {brand:'eSUN',type:'HIPS',name:'HIPS',color:'White',hex:'#f8f8f8',size:1000,price:22.99,inStock:true,url:'https://esun3d.com'},
+  {brand:'eSUN',type:'PVA',name:'PVA',color:'Natural',hex:'#e8dcc8',size:500,price:35.99,inStock:true,url:'https://esun3d.com'},
+  {brand:'eSUN',type:'Other',name:'Wood PLA',color:'Wood',hex:'#d4a37a',size:1000,price:25.99,inStock:true,url:'https://esun3d.com'},
 
-  {brand:'Overture',type:'PLA',name:'PLA',color:'White',hex:'#f5f5f0',size:1000,price:16.99,inStock:true,url:'https://overture3d.com'},
+  // Overture - Expanded Types
   {brand:'Overture',type:'PLA',name:'PLA',color:'Black',hex:'#1a1a1a',size:1000,price:16.99,inStock:true,url:'https://overture3d.com'},
-  {brand:'Overture',type:'PLA',name:'PLA Pro',color:'Marble',hex:'#e8e0d5',size:1000,price:19.99,inStock:true,url:'https://overture3d.com'},
-  {brand:'Overture',type:'PLA',name:'PLA',color:'Teal',hex:'#1D9E75',size:1000,price:16.99,inStock:false,url:'https://overture3d.com'},
-  {brand:'Overture',type:'PETG',name:'PETG',color:'Red',hex:'#c0392b',size:1000,price:18.99,inStock:true,url:'https://overture3d.com'},
+  {brand:'Overture',type:'PLA',name:'Rock PLA',color:'Rock White',hex:'#e8e0d5',size:1000,price:22.99,inStock:true,url:'https://overture3d.com'},
   {brand:'Overture',type:'PETG',name:'PETG',color:'Clear',hex:'#ddeef8',size:1000,price:18.99,inStock:true,url:'https://overture3d.com'},
+  {brand:'Overture',type:'TPU',name:'TPU',color:'Red',hex:'#e63946',size:1000,price:24.99,inStock:true,url:'https://overture3d.com'},
+  {brand:'Overture',type:'PA',name:'Easy Nylon',color:'Black',hex:'#1a1a1a',size:1000,price:29.99,inStock:true,url:'https://overture3d.com'},
 
-  {brand:'Prusament',type:'PLA',name:'PLA',color:'Galaxy Black',hex:'#1c1c2e',size:1000,price:24.99,inStock:true,url:'https://prusament.com'},
-  {brand:'Prusament',type:'PLA',name:'PLA',color:'Vanilla White',hex:'#fdf6e3',size:1000,price:22.99,inStock:true,url:'https://prusament.com'},
-  {brand:'Prusament',type:'PLA',name:'PLA',color:'Prusa Orange',hex:'#ff6b00',size:1000,price:22.99,inStock:true,url:'https://prusament.com'},
-  {brand:'Prusament',type:'PLA',name:'PLA',color:'Azure Blue',hex:'#3a86ff',size:1000,price:22.99,inStock:false,url:'https://prusament.com'},
-  {brand:'Prusament',type:'PLA',name:'PLA',color:'Lipstick Red',hex:'#e63946',size:1000,price:22.99,inStock:true,url:'https://prusament.com'},
-  {brand:'Prusament',type:'PLA',name:'PLA',color:'Lime Green',hex:'#74c69d',size:1000,price:22.99,inStock:true,url:'https://prusament.com'},
-  {brand:'Prusament',type:'PETG',name:'PETG',color:'Signal White',hex:'#f8f8f8',size:1000,price:24.99,inStock:true,url:'https://prusament.com'},
-  {brand:'Prusament',type:'PETG',name:'PETG',color:'Jet Black',hex:'#0a0a0a',size:1000,price:24.99,inStock:true,url:'https://prusament.com'},
-  {brand:'Prusament',type:'ASA',name:'ASA',color:'Urban Grey',hex:'#808080',size:1000,price:27.99,inStock:false,url:'https://prusament.com'},
+  // Hatchbox - Expanded Types
+  {brand:'Hatchbox',type:'PLA',name:'PLA',color:'True Black',hex:'#0a0a0a',size:1000,price:19.99,inStock:true,url:'https://hatchbox3d.com'},
+  {brand:'Hatchbox',type:'PETG',name:'PETG',color:'Black',hex:'#1a1a1a',size:1000,price:22.99,inStock:true,url:'https://hatchbox3d.com'},
+  {brand:'Hatchbox',type:'ABS',name:'ABS',color:'White',hex:'#f5f5f0',size:1000,price:21.99,inStock:false,url:'https://hatchbox3d.com'},
+  {brand:'Hatchbox',type:'TPU',name:'TPU',color:'Blue',hex:'#1a6fc4',size:1000,price:28.99,inStock:true,url:'https://hatchbox3d.com'},
+  {brand:'Hatchbox',type:'Other',name:'Wood PLA',color:'Wood',hex:'#d4a37a',size:1000,price:32.99,inStock:true,url:'https://hatchbox3d.com'},
 
-  {brand:'Creality',type:'PLA',name:'Ender PLA',color:'White',hex:'#f5f5f0',size:1000,price:14.99,inStock:true,url:'https://creality.com'},
-  {brand:'Creality',type:'PLA',name:'Ender PLA',color:'Black',hex:'#1a1a1a',size:1000,price:14.99,inStock:true,url:'https://creality.com'},
+  // Sunlu - Expanded Types
+  {brand:'Sunlu',type:'PLA',name:'PLA+',color:'White',hex:'#f5f5f0',size:1000,price:13.99,inStock:true,url:'https://sunlu.com'},
+  {brand:'Sunlu',type:'PETG',name:'PETG',color:'Transparent',hex:'#d0e8f2',size:1000,price:16.99,inStock:true,url:'https://sunlu.com'},
+  {brand:'Sunlu',type:'ABS',name:'ABS',color:'Black',hex:'#1a1a1a',size:1000,price:15.99,inStock:true,url:'https://sunlu.com'},
+  {brand:'Sunlu',type:'TPU',name:'TPU 95A',color:'Black',hex:'#1a1a1a',size:500,price:15.99,inStock:true,url:'https://sunlu.com'},
+  {brand:'Sunlu',type:'PA',name:'Nylon',color:'Natural',hex:'#e8dcc8',size:1000,price:32.99,inStock:true,url:'https://sunlu.com'},
+
+  // Anycubic
+  {brand:'Anycubic',type:'PLA',name:'PLA+',color:'White',hex:'#f5f5f0',size:1000,price:15.99,inStock:true,url:'https://anycubic.com'},
+  {brand:'Anycubic',type:'ABS',name:'ABS+',color:'Black',hex:'#1a1a1a',size:1000,price:18.99,inStock:true,url:'https://anycubic.com'},
+  {brand:'Anycubic',type:'PETG',name:'PETG',color:'Clear',hex:'#ddeef8',size:1000,price:17.99,inStock:false,url:'https://anycubic.com'},
+
+  // Creality
   {brand:'Creality',type:'PLA',name:'Hyper PLA',color:'White',hex:'#f8f8f8',size:1000,price:16.99,inStock:true,url:'https://creality.com'},
-  {brand:'Creality',type:'PLA',name:'Hyper PLA',color:'Black',hex:'#1a1a1a',size:1000,price:16.99,inStock:true,url:'https://creality.com'},
   {brand:'Creality',type:'PETG',name:'Hyper PETG',color:'Clear',hex:'#ddeef8',size:1000,price:17.99,inStock:true,url:'https://creality.com'},
+  {brand:'Creality',type:'ABS',name:'Hyper ABS',color:'Black',hex:'#1a1a1a',size:1000,price:19.99,inStock:true,url:'https://creality.com'},
   {brand:'Creality',type:'CF',name:'PLA-CF',color:'Carbon Black',hex:'#1e1e1e',size:1000,price:34.99,inStock:false,url:'https://creality.com'},
 
-  {brand:'Elegoo',type:'PLA',name:'PLA+',color:'White',hex:'#f5f5f0',size:1000,price:14.99,inStock:true,url:'https://elegoo.com'},
+  // Elegoo
   {brand:'Elegoo',type:'PLA',name:'PLA+',color:'Black',hex:'#1a1a1a',size:1000,price:14.99,inStock:true,url:'https://elegoo.com'},
-  {brand:'Elegoo',type:'PLA',name:'PLA+',color:'Grey',hex:'#888780',size:1000,price:14.99,inStock:true,url:'https://elegoo.com'},
-  {brand:'Elegoo',type:'PLA',name:'PLA+',color:'Red',hex:'#c0392b',size:1000,price:14.99,inStock:false,url:'https://elegoo.com'},
-  {brand:'Elegoo',type:'PETG',name:'PETG',color:'Black',hex:'#1a1a1a',size:1000,price:16.99,inStock:true,url:'https://elegoo.com'},
   {brand:'Elegoo',type:'PETG',name:'PETG',color:'Clear',hex:'#ddeef8',size:1000,price:16.99,inStock:true,url:'https://elegoo.com'},
+  {brand:'Elegoo',type:'TPU',name:'TPU',color:'White',hex:'#f8f8f8',size:1000,price:22.99,inStock:true,url:'https://elegoo.com'},
 
-  {brand:'Inland',type:'PLA',name:'PLA+',color:'White',hex:'#f5f5f0',size:1000,price:15.99,inStock:true,url:'https://microcenter.com'},
-  {brand:'Inland',type:'PLA',name:'PLA+',color:'Black',hex:'#1a1a1a',size:1000,price:15.99,inStock:true,url:'https://microcenter.com'},
-  {brand:'Inland',type:'PLA',name:'PLA+',color:'Red',hex:'#e63946',size:1000,price:15.99,inStock:true,url:'https://microcenter.com'},
-  {brand:'Inland',type:'PLA',name:'PLA+',color:'Blue',hex:'#1a6fc4',size:1000,price:15.99,inStock:false,url:'https://microcenter.com'},
-  {brand:'Inland',type:'PETG',name:'PETG',color:'Clear',hex:'#ddeef8',size:1000,price:17.99,inStock:true,url:'https://microcenter.com'},
+  // Fillamentum (Known for specialty)
+  {brand:'Fillamentum',type:'PLA',name:'Extrafill PLA',color:'Vertigo Grey',hex:'#888780',size:750,price:23.99,inStock:true,url:'https://fillamentum.com'},
+  {brand:'Fillamentum',type:'CPE',name:'CPE HG100',color:'Deep Sea Transparent',hex:'#1a6fc4',size:750,price:35.99,inStock:true,url:'https://fillamentum.com'},
+  {brand:'Fillamentum',type:'TPU',name:'Flexfill TPU 98A',color:'Signal Red',hex:'#e63946',size:500,price:30.99,inStock:true,url:'https://fillamentum.com'},
 
-  {brand:'Amolen',type:'PLA',name:'Silk PLA',color:'Copper',hex:'#b87333',size:1000,price:17.99,inStock:true,url:'https://amolen.com'},
-  {brand:'Amolen',type:'PLA',name:'Silk PLA',color:'Gold',hex:'#d4a017',size:1000,price:17.99,inStock:true,url:'https://amolen.com'},
-  {brand:'Amolen',type:'PLA',name:'Silk PLA',color:'Silver',hex:'#c0c0c0',size:1000,price:17.99,inStock:true,url:'https://amolen.com'},
-  {brand:'Amolen',type:'PLA',name:'Silk PLA',color:'Rose Gold',hex:'#b76e79',size:1000,price:17.99,inStock:false,url:'https://amolen.com'},
-  {brand:'Amolen',type:'PLA',name:'Glow PLA',color:'Glow Blue',hex:'#e8e8ff',size:500,price:14.99,inStock:true,url:'https://amolen.com'},
-  {brand:'Amolen',type:'PLA',name:'Glow PLA',color:'Glow Green',hex:'#b8ffcc',size:500,price:14.99,inStock:true,url:'https://amolen.com'},
-
-  {brand:'Eryone',type:'PLA',name:'Silk PLA',color:'Rose Gold',hex:'#b76e79',size:1000,price:16.99,inStock:true,url:'https://eryone3d.com'},
-  {brand:'Eryone',type:'PLA',name:'Silk PLA',color:'Galaxy Blue',hex:'#1c1c2e',size:1000,price:16.99,inStock:true,url:'https://eryone3d.com'},
-  {brand:'Eryone',type:'PLA',name:'Marble PLA',color:'Marble White',hex:'#e8e0d5',size:1000,price:16.99,inStock:false,url:'https://eryone3d.com'},
-
-  {brand:'Duramic',type:'PLA',name:'PLA+',color:'White',hex:'#f5f5f0',size:1000,price:14.99,inStock:true,url:'https://duramic3d.com'},
-  {brand:'Duramic',type:'PLA',name:'PLA+',color:'Black',hex:'#1a1a1a',size:1000,price:14.99,inStock:true,url:'https://duramic3d.com'},
-  {brand:'Duramic',type:'PLA',name:'PLA+',color:'Blue',hex:'#1a6fc4',size:1000,price:14.99,inStock:true,url:'https://duramic3d.com'},
-
-  {brand:'Fiberlogy',type:'PLA',name:'FiberFlex 40D',color:'White',hex:'#f5f5f0',size:850,price:27.99,inStock:true,url:'https://fiberlogy.com'},
-  {brand:'Fiberlogy',type:'PLA',name:'FiberFlex 40D',color:'Black',hex:'#1a1a1a',size:850,price:27.99,inStock:true,url:'https://fiberlogy.com'},
-  {brand:'Fiberlogy',type:'PA',name:'PA12',color:'Natural',hex:'#e8dcc8',size:750,price:54.99,inStock:false,url:'https://fiberlogy.com'},
-
-  {brand:'ColorFabb',type:'PLA',name:'PLA Economy',color:'White',hex:'#f8f8f8',size:750,price:22.99,inStock:true,url:'https://colorfabb.com'},
+  // ColorFabb (Known for specialty)
   {brand:'ColorFabb',type:'PLA',name:'PLA Economy',color:'Black',hex:'#0a0a0a',size:750,price:22.99,inStock:true,url:'https://colorfabb.com'},
   {brand:'ColorFabb',type:'CF',name:'XT-CF20',color:'Carbon',hex:'#1e1e1e',size:750,price:59.99,inStock:true,url:'https://colorfabb.com'},
-  {brand:'ColorFabb',type:'PLA',name:'varioShore TPU',color:'Mango',hex:'#f4a261',size:650,price:34.99,inStock:false,url:'https://colorfabb.com'},
+  {brand:'ColorFabb',type:'TPU',name:'varioShore TPU',color:'Mango',hex:'#f4a261',size:650,price:34.99,inStock:false,url:'https://colorfabb.com'},
+  {brand:'ColorFabb',type:'Other',name:'Woodfill',color:'Wood',hex:'#d4a37a',size:600,price:45.99,inStock:true,url:'https://colorfabb.com'},
 
-  {brand:'Proto-pasta',type:'PLA',name:'Matte Fiber PLA',color:'Radiant Red',hex:'#c0392b',size:500,price:22.99,inStock:true,url:'https://proto-pasta.com'},
-  {brand:'Proto-pasta',type:'PLA',name:'Matte Fiber PLA',color:'Matte Black',hex:'#2c2c2a',size:500,price:22.99,inStock:true,url:'https://proto-pasta.com'},
-  {brand:'Proto-pasta',type:'PLA',name:'High Temp PLA',color:'Blue',hex:'#1a6fc4',size:500,price:24.99,inStock:false,url:'https://proto-pasta.com'},
-  {brand:'Proto-pasta',type:'PLA',name:'Stainless Steel PLA',color:'Metallic Grey',hex:'#808080',size:500,price:34.99,inStock:true,url:'https://proto-pasta.com'},
+  // Fiberlogy
+  {brand:'Fiberlogy',type:'PLA',name:'FiberFlex 40D',color:'White',hex:'#f5f5f0',size:850,price:27.99,inStock:true,url:'https://fiberlogy.com'},
+  {brand:'Fiberlogy',type:'PA',name:'PA12',color:'Natural',hex:'#e8dcc8',size:750,price:54.99,inStock:false,url:'https://fiberlogy.com'},
+  {brand:'Fiberlogy',type:'HIPS',name:'HIPS',color:'White',hex:'#f8f8f8',size:850,price:29.99,inStock:true,url:'https://fiberlogy.com'},
 
-  {brand:'FormFutura',type:'PLA',name:'EasyFil PLA',color:'White',hex:'#f8f8f8',size:750,price:22.99,inStock:true,url:'https://formfutura.com'},
-  {brand:'FormFutura',type:'PLA',name:'EasyFil PLA',color:'Black',hex:'#1a1a1a',size:750,price:22.99,inStock:true,url:'https://formfutura.com'},
-  {brand:'FormFutura',type:'PLA',name:'EasyFil PLA',color:'Signal Red',hex:'#e63946',size:750,price:22.99,inStock:false,url:'https://formfutura.com'},
-
-  {brand:'Fillamentum',type:'PLA',name:'Crystal Clear PLA',color:'Crystal Clear',hex:'#d0e8f2',size:750,price:24.99,inStock:false,url:'https://fillamentum.com'},
-  {brand:'Fillamentum',type:'PLA',name:'Extrafill PLA',color:'Traffic White',hex:'#f8f8f8',size:750,price:23.99,inStock:true,url:'https://fillamentum.com'},
-  {brand:'Fillamentum',type:'PLA',name:'Extrafill PLA',color:'Vertigo Grey',hex:'#888780',size:750,price:23.99,inStock:true,url:'https://fillamentum.com'},
-
+  // 3DXTech (Engineering grades)
   {brand:'3DXTech',type:'CF',name:'CarbonX CF-PETG',color:'Carbon Black',hex:'#1e1e1e',size:500,price:49.99,inStock:true,url:'https://3dxtech.com'},
-  {brand:'3DXTech',type:'CF',name:'CarbonX CF-PLA',color:'Carbon Black',hex:'#252525',size:500,price:44.99,inStock:true,url:'https://3dxtech.com'},
+  {brand:'3DXTech',type:'PC',name:'PC',color:'Clear',hex:'#ddeef8',size:500,price:39.99,inStock:true,url:'https://3dxtech.com'},
+  {brand:'3DXTech',type:'PA',name:'ThermaX PEI',color:'Amber',hex:'#b87333',size:500,price:149.99,inStock:true,url:'https://3dxtech.com'},
 
+  // Inland
+  {brand:'Inland',type:'PLA',name:'PLA+',color:'White',hex:'#f5f5f0',size:1000,price:15.99,inStock:true,url:'https://microcenter.com'},
+  {brand:'Inland',type:'PETG',name:'PETG',color:'Clear',hex:'#ddeef8',size:1000,price:17.99,inStock:true,url:'https://microcenter.com'},
+  {brand:'Inland',type:'PC',name:'PC',color:'Clear',hex:'#ddeef8',size:500,price:22.99,inStock:true,url:'https://microcenter.com'},
+
+  // Ultimaker
   {brand:'Ultimaker',type:'PLA',name:'PLA',color:'Pearl White',hex:'#f5f0e8',size:750,price:34.99,inStock:true,url:'https://ultimaker.com'},
-  {brand:'Ultimaker',type:'PLA',name:'PLA',color:'Black',hex:'#1a1a1a',size:750,price:34.99,inStock:true,url:'https://ultimaker.com'},
-  {brand:'Ultimaker',type:'PETG',name:'Tough PLA',color:'White',hex:'#f8f8f8',size:750,price:39.99,inStock:false,url:'https://ultimaker.com'},
+  {brand:'Ultimaker',type:'PVA',name:'PVA',color:'Natural',hex:'#e8dcc8',size:350,price:45.99,inStock:true,url:'https://ultimaker.com'},
 
+  // Raise3D
   {brand:'Raise3D',type:'PA',name:'PA12 CF',color:'Black',hex:'#1a1a1a',size:1000,price:79.99,inStock:false,url:'https://raise3d.com'},
-  {brand:'Raise3D',type:'PLA',name:'Premium PLA',color:'White',hex:'#f5f5f0',size:1000,price:29.99,inStock:true,url:'https://raise3d.com'},
-
-  {brand:'Matter3D',type:'PLA',name:'Industrial PLA',color:'White',hex:'#f5f5f0',size:1000,price:18.99,inStock:true,url:'https://matter3d.com'},
-  {brand:'Matter3D',type:'PLA',name:'Industrial PLA',color:'Black',hex:'#1a1a1a',size:1000,price:18.99,inStock:true,url:'https://matter3d.com'},
+  {brand:'Raise3D',type:'PC',name:'Premium PC',color:'Transparent',hex:'#ddeef8',size:1000,price:49.99,inStock:true,url:'https://raise3d.com'},
 ];
 
 const BRAND_CLR={
@@ -467,7 +400,7 @@ const BRAND_CLR={
 };
 
 function bi(b){const c=BRAND_CLR[b]||'#888';return`<div class="brand-icon" style="background:${c}20;color:${c}">${b.slice(0,2).toUpperCase()}</div>`}
-function bc(t){return{PLA:'pla',PETG:'petg',ABS:'abs',TPU:'tpu',ASA:'asa',PA:'pa',CF:'cf'}[t]||'other'}
+function bc(t){return{PLA:'pla',PETG:'petg',ABS:'abs',TPU:'tpu',ASA:'asa',PA:'pa',CF:'cf',PC:'pc',PVA:'pva',HIPS:'hips'}[t]||'other'}
 function pc(p){return p<15?'#E24B4A':p<30?'#EF9F27':'#1D9E75'}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2)}
 function sz(s){return s>=1000?(s/1000)+'kg':s+'g'}
