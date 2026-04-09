@@ -1,104 +1,131 @@
 <style>
+:root{
+--dk-bg:#0f1117;--dk-surface:#181b24;--dk-card:#1e2130;--dk-border:#2a2f3e;--dk-border2:#363d52;
+--dk-text:#e8eaf0;--dk-muted:#8b90a0;--dk-hint:#555b6e;
+--dk-green:#3ddc84;--dk-red:#ff5c5c;--dk-blue:#5b9cf6;--dk-amber:#f5a623;--dk-purple:#a78bfa;--dk-pink:#f472b6;--dk-teal:#34d399;
+}
 *{box-sizing:border-box;margin:0;padding:0}
+.app{background:var(--dk-bg);color:var(--dk-text);font-family:var(--font-sans);min-height:100vh;padding:0 0 2rem}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
-.tabs{display:flex;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:1.1rem}
-.tab{font-size:13px;padding:7px 14px;cursor:pointer;border:none;background:none;color:var(--color-text-secondary);border-bottom:2px solid transparent;margin-bottom:-0.5px}
-.tab.active{color:var(--color-text-primary);font-weight:500;border-bottom-color:var(--color-text-primary)}
+input,select,textarea,button{font-family:var(--font-sans)}
+input[type=text],input[type=number],select{background:var(--dk-surface);border:1px solid var(--dk-border);color:var(--dk-text);border-radius:6px;font-size:12px;padding:5px 9px;height:30px;outline:none}
+input[type=text]:focus,input[type=number]:focus,select:focus{border-color:var(--dk-blue)}
+select option{background:var(--dk-surface);color:var(--dk-text)}
+input[type=color]{background:var(--dk-surface);border:1px solid var(--dk-border);border-radius:6px;height:32px;padding:2px 4px;cursor:pointer;width:100%}
+.btn{font-size:12px;padding:4px 12px;height:30px;cursor:pointer;border-radius:6px;border:1px solid var(--dk-border2);background:transparent;color:var(--dk-text);display:inline-flex;align-items:center;gap:5px;white-space:nowrap;transition:background .12s}
+.btn:hover{background:var(--dk-surface)}
+.btn.primary{background:var(--dk-blue);color:#fff;border-color:var(--dk-blue)}
+.btn.primary:hover{opacity:.88}
+.btn.sm{font-size:11px;height:24px;padding:2px 9px}
+.btn.success{color:var(--dk-green);border-color:#2a5c3f}
+.btn.success:hover{background:#1a3328}
+.btn.danger{color:var(--dk-red);border-color:#5c2a2a}
+.btn.danger:hover{background:#3a1a1a}
+.btn.wish{color:var(--dk-blue);border-color:#1e3a5c}
+.btn.wish:hover{background:#0d2a44}
+
+.top-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:9px;padding:1.2rem 0 .8rem;border-bottom:1px solid var(--dk-border);margin-bottom:1rem}
+.top-title{font-size:18px;font-weight:500;color:var(--dk-text)}
+.top-sub{font-size:11px;color:var(--dk-muted);margin-top:2px}
+
 .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:1rem}
-.stat{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:0.6rem 0.85rem}
-.stat-l{font-size:11px;color:var(--color-text-secondary);margin-bottom:2px}
-.stat-v{font-size:20px;font-weight:500}
-.stat-v.red{color:#E24B4A}.stat-v.grn{color:#1D9E75}
-.toolbar{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:0.85rem;align-items:center}
-.toolbar input[type=text]{flex:1;min-width:130px;font-size:13px;padding:5px 9px;height:30px}
-.toolbar select{font-size:12px;padding:3px 7px;height:30px;min-width:95px}
-.btn{font-size:12px;padding:4px 11px;height:30px;cursor:pointer;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-primary);display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
-.btn:hover{background:var(--color-background-secondary)}
-.btn.primary{background:var(--color-text-primary);color:var(--color-background-primary);border-color:var(--color-text-primary)}
-.btn.primary:hover{opacity:.85}
-.btn.sm{font-size:11px;height:24px;padding:2px 8px}
-.btn.success{color:#0F6E56;border-color:#9FE1CB}.btn.success:hover{background:#E1F5EE}
-.btn.danger{color:#A32D2D;border-color:#F09595}.btn.danger:hover{background:#FCEBEB}
-.badge{display:inline-flex;align-items:center;font-size:10px;padding:1px 6px;border-radius:var(--border-radius-md);font-weight:500}
-.badge.pla{background:#EAF3DE;color:#3B6D11}.badge.petg{background:#E6F1FB;color:#185FA5}
-.badge.abs{background:#FAECE7;color:#993C1D}.badge.tpu{background:#FBEAF0;color:#993556}
-.badge.asa{background:#FAEEDA;color:#854F0B}.badge.pa{background:#EEEDFE;color:#3C3489}
-.badge.cf{background:#F1EFE8;color:#444441}.badge.other{background:var(--color-background-secondary);color:var(--color-text-secondary)}
-.badge.in{background:#E1F5EE;color:#0F6E56}.badge.out{background:#FCEBEB;color:#A32D2D}
-.badge.wish{background:#E6F1FB;color:#185FA5}
-.count-bar{font-size:12px;color:var(--color-text-secondary);margin-bottom:0.6rem}
+.stat{background:var(--dk-surface);border:1px solid var(--dk-border);border-radius:8px;padding:.6rem .85rem}
+.stat-l{font-size:11px;color:var(--dk-muted);margin-bottom:3px}
+.stat-v{font-size:19px;font-weight:500;color:var(--dk-text)}
+.stat-v.red{color:var(--dk-red)}.stat-v.grn{color:var(--dk-green)}.stat-v.blue{color:var(--dk-blue)}
 
-/* COLOR PALETTE BROWSER */
-.color-family-section{margin-bottom:1.5rem}
-.family-label{font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:7px;text-transform:uppercase;letter-spacing:.04em}
-.color-swatches{display:flex;flex-wrap:wrap;gap:6px}
-.swatch-btn{width:36px;height:36px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:transform .1s;flex-shrink:0}
-.swatch-btn:hover{transform:scale(1.15)}
-.swatch-btn.active{border-color:var(--color-text-primary);transform:scale(1.15)}
-.swatch-btn.active-out{border-color:#E24B4A}
-.swatch-tooltip{font-size:11px;color:var(--color-text-secondary);margin-top:4px}
+.tabs{display:flex;border-bottom:1px solid var(--dk-border);margin-bottom:1rem}
+.tab{font-size:12px;padding:7px 14px;cursor:pointer;border:none;background:none;color:var(--dk-muted);border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab:hover{color:var(--dk-text)}
+.tab.active{color:var(--dk-blue);border-bottom-color:var(--dk-blue);font-weight:500}
 
-/* SHOP GRID - color-first view */
-.shop-list{display:flex;flex-direction:column;gap:7px}
-.shop-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:var(--color-background-primary)}
-.shop-row:hover{border-color:var(--color-border-secondary);background:var(--color-background-secondary)}
-.swatch-lg{width:32px;height:32px;border-radius:50%;border:0.5px solid rgba(0,0,0,0.15);flex-shrink:0}
+.toolbar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:.8rem;align-items:center}
+
+.badge{display:inline-flex;align-items:center;font-size:10px;padding:1px 6px;border-radius:5px;font-weight:500}
+.badge.pla{background:#1a3320;color:#3ddc84}.badge.petg{background:#1a2e4a;color:#5b9cf6}
+.badge.abs{background:#4a2010;color:#f5a623}.badge.tpu{background:#3a1a3a;color:#d472f6}
+.badge.asa{background:#4a2a10;color:#f5c642}.badge.pa{background:#2a1a4a;color:#a78bfa}
+.badge.cf{background:#1e2020;color:#8b90a0}.badge.other{background:#222;color:#8b90a0}
+.badge.in{background:#1a3320;color:#3ddc84}.badge.out{background:#3a1a1a;color:#ff5c5c}
+.badge.wish{background:#1a2e4a;color:#5b9cf6}
+.count-bar{font-size:11px;color:var(--dk-muted);margin-bottom:.6rem}
+
+/* COLOR PALETTE */
+.pal-bar{margin-bottom:1rem;padding:.85rem;background:var(--dk-surface);border-radius:10px;border:1px solid var(--dk-border)}
+.pal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.pal-header span{font-size:12px;font-weight:500;color:var(--dk-text)}
+.families{display:flex;flex-direction:column;gap:10px}
+.family-row{display:flex;align-items:center;gap:8px}
+.family-name{font-size:10px;color:var(--dk-muted);width:68px;flex-shrink:0;text-align:right}
+.swatches{display:flex;flex-wrap:wrap;gap:5px}
+.sw{width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:transform .1s,border-color .1s;flex-shrink:0}
+.sw:hover{transform:scale(1.18)}
+.sw.active{border-color:#fff;transform:scale(1.18)}
+.active-label{font-size:11px;color:var(--dk-muted);margin-top:6px;min-height:15px}
+
+/* SHOP LIST */
+.shop-list{display:flex;flex-direction:column;gap:5px}
+.shop-row{display:flex;align-items:center;gap:10px;padding:7px 10px;border:1px solid var(--dk-border);border-radius:8px;background:var(--dk-card)}
+.shop-row:hover{border-color:var(--dk-border2)}
+.sw-lg{width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,0.1);flex-shrink:0}
 .row-info{flex:1;min-width:0}
-.row-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.row-sub{font-size:11px;color:var(--color-text-secondary);display:flex;gap:5px;align-items:center;margin-top:2px;flex-wrap:wrap}
-.row-price{font-size:13px;font-weight:500;white-space:nowrap;margin-right:4px}
-.row-actions{display:flex;gap:5px;flex-shrink:0}
+.row-name{font-size:12px;font-weight:500;color:var(--dk-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row-sub{display:flex;gap:5px;align-items:center;margin-top:2px;flex-wrap:wrap}
+.row-price{font-size:12px;font-weight:500;color:var(--dk-text);white-space:nowrap;margin-right:4px}
+.row-acts{display:flex;gap:4px;flex-shrink:0}
 
-/* BRAND CARDS view */
+/* BRAND GRID */
 .brand-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
-.brand-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:.9rem}
-.brand-card:hover{border-color:var(--color-border-secondary)}
-.brand-header{display:flex;align-items:center;gap:9px;margin-bottom:9px}
-.brand-icon{width:32px;height:32px;border-radius:var(--border-radius-md);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0}
-.brand-swatches{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
-.mini-swatch{width:20px;height:20px;border-radius:50%;border:0.5px solid rgba(0,0,0,0.12);cursor:pointer;flex-shrink:0}
-.mini-swatch:hover{transform:scale(1.2)}
+.brand-card{background:var(--dk-card);border:1px solid var(--dk-border);border-radius:10px;padding:.9rem}
+.brand-card:hover{border-color:var(--dk-border2)}
+.brand-hdr{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.brand-ico{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0}
+.mini-sw{width:20px;height:20px;border-radius:50%;border:1px solid rgba(255,255,255,0.1);cursor:pointer;flex-shrink:0;transition:transform .1s}
+.mini-sw:hover{transform:scale(1.25)}
+.mini-swatches{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
 
 /* INVENTORY */
 .inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:9px}
-.inv-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:.85rem}
-.inv-card:hover{border-color:var(--color-border-secondary)}
-.inv-card.low{border-left:3px solid #E24B4A;border-radius:0 var(--border-radius-lg) var(--border-radius-lg) 0}
+.inv-card{background:var(--dk-card);border:1px solid var(--dk-border);border-radius:10px;padding:.85rem}
+.inv-card:hover{border-color:var(--dk-border2)}
+.inv-card.low{border-left:3px solid var(--dk-red);border-radius:0 10px 10px 0}
 .inv-top{display:flex;align-items:flex-start;gap:8px;margin-bottom:7px}
-.dot{width:30px;height:30px;border-radius:50%;border:0.5px solid rgba(0,0,0,0.12);flex-shrink:0}
-.inv-name{font-size:13px;font-weight:500;line-height:1.3}
-.inv-brand{font-size:11px;color:var(--color-text-secondary)}
+.dot{border-radius:50%;border:1px solid rgba(255,255,255,0.12);flex-shrink:0}
+.inv-name{font-size:13px;font-weight:500;color:var(--dk-text);line-height:1.3}
+.inv-brand{font-size:11px;color:var(--dk-muted)}
 .inv-meta{display:grid;grid-template-columns:1fr 1fr;gap:2px 7px;font-size:11px;margin-bottom:7px}
-.inv-meta span{color:var(--color-text-secondary)}
-.inv-meta strong{font-weight:500}
-.prog{height:4px;background:var(--color-border-tertiary);border-radius:2px;overflow:hidden;margin-bottom:6px}
+.inv-meta span{color:var(--dk-muted)}
+.inv-meta strong{color:var(--dk-text);font-weight:500}
+.prog{height:4px;background:var(--dk-border);border-radius:2px;overflow:hidden;margin-bottom:6px}
 .prog-f{height:100%;border-radius:2px}
-.inv-actions{display:flex;gap:5px}
-.inv-actions .btn{flex:1;justify-content:center}
+.inv-acts{display:flex;gap:5px}
+.inv-acts .btn{flex:1;justify-content:center}
 
 /* ADD FORM */
-.form-wrap{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:1.1rem;max-width:480px;margin:0 auto}
+.form-wrap{background:var(--dk-card);border:1px solid var(--dk-border);border-radius:10px;padding:1.1rem;max-width:480px;margin:0 auto}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .fg{display:flex;flex-direction:column;gap:3px}
 .fg.full{grid-column:1/-1}
-.fg label{font-size:11px;color:var(--color-text-secondary)}
-.fg input,.fg select{font-size:13px;padding:5px 8px}
-.form-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:.9rem}
-.wish-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);margin-bottom:7px;background:var(--color-background-primary)}
-.wish-item:hover{border-color:var(--color-border-secondary)}
-.empty{text-align:center;padding:2.5rem 1rem;color:var(--color-text-secondary);font-size:13px}
+.fg label{font-size:11px;color:var(--dk-muted)}
+.form-acts{display:flex;justify-content:flex-end;gap:7px;margin-top:.9rem}
+
+/* WISHLIST */
+.wish-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border:1px solid var(--dk-border);border-radius:8px;margin-bottom:6px;background:var(--dk-card)}
+.wish-item:hover{border-color:var(--dk-border2)}
+.empty{text-align:center;padding:2.5rem 1rem;color:var(--dk-muted);font-size:13px}
 @media(max-width:460px){.form-grid{grid-template-columns:1fr}}
 </style>
 
-<h2 class="sr-only">Filament shop browser with color palette filter, inventory tracker, and wishlist — 150+ filaments across 20+ brands</h2>
+<div class="app">
+<h2 class="sr-only">Filament tracker — dark mode shop browser with 300+ filaments across 25 brands, inventory management, and wishlist</h2>
 
-<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:9px;padding:1.1rem 0 .75rem">
+<div class="top-bar">
   <div>
-    <div style="font-size:18px;font-weight:500">Filament tracker</div>
-    <div style="font-size:12px;color:var(--color-text-secondary);margin-top:1px">Shop browser · inventory · wishlist</div>
+    <div class="top-title">Filament tracker</div>
+    <div class="top-sub">300+ products · 25 brands · dark mode</div>
   </div>
   <div style="display:flex;gap:6px;flex-wrap:wrap">
-    <button class="btn" onclick="doExportCSV()">Export CSV</button>
+    <button class="btn" onclick="doCSV()">Export CSV</button>
     <button class="btn primary" onclick="showTab('add')">+ Add spool</button>
   </div>
 </div>
@@ -113,12 +140,17 @@
 </div>
 
 <div id="pane-shop">
+  <div class="pal-bar">
+    <div class="pal-header"><span>Filter by color</span><button class="btn sm" onclick="clrFilter()">Clear</button></div>
+    <div class="families" id="fam-swatches"></div>
+    <div class="active-label" id="act-lbl"></div>
+  </div>
   <div class="toolbar">
-    <input type="text" id="sSearch" placeholder="Search name, brand, color..." oninput="renderShop()"/>
+    <input type="text" id="sSearch" placeholder="Search brand, name, color..." oninput="renderShop()"/>
     <select id="sBrand" onchange="renderShop()"><option value="">All brands</option></select>
     <select id="sType" onchange="renderShop()">
       <option value="">All types</option>
-      <option>PLA</option><option>PETG</option><option>ABS</option><option>TPU</option><option>ASA</option><option>PA</option><option>CF</option><option>Other</option>
+      <option>PLA</option><option>PLA+</option><option>PETG</option><option>ABS</option><option>TPU</option><option>ASA</option><option>PA</option><option>CF</option><option>Other</option>
     </select>
     <select id="sAvail" onchange="renderShop()">
       <option value="">All availability</option>
@@ -133,43 +165,31 @@
       <option value="50">Under $50</option>
     </select>
     <select id="sView" onchange="renderShop()">
-      <option value="color">By color</option>
+      <option value="color">By color family</option>
       <option value="list">List view</option>
       <option value="brand">By brand</option>
     </select>
   </div>
-
-  <div id="color-palette-bar" style="margin-bottom:1rem;padding:.85rem;background:var(--color-background-secondary);border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-tertiary)">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-      <span style="font-size:12px;font-weight:500">Filter by color family</span>
-      <button class="btn sm" onclick="clearColorFilter()">Clear</button>
-    </div>
-    <div id="family-swatches"></div>
-    <div id="active-color-label" style="font-size:11px;color:var(--color-text-secondary);margin-top:6px;min-height:16px"></div>
-  </div>
-
   <div class="count-bar" id="sCount"></div>
   <div id="shop-content"></div>
 </div>
 
 <div id="pane-inventory" style="display:none">
   <div class="toolbar">
-    <input type="text" id="iSearch" placeholder="Search..." oninput="renderInventory()"/>
-    <select id="iBrand" onchange="renderInventory()"><option value="">All brands</option></select>
-    <select id="iType" onchange="renderInventory()">
+    <input type="text" id="iSearch" placeholder="Search..." oninput="renderInv()"/>
+    <select id="iBrand" onchange="renderInv()"><option value="">All brands</option></select>
+    <select id="iType" onchange="renderInv()">
       <option value="">All types</option>
-      <option>PLA</option><option>PETG</option><option>ABS</option><option>TPU</option><option>ASA</option><option>PA</option><option>CF</option><option>Other</option>
+      <option>PLA</option><option>PLA+</option><option>PETG</option><option>ABS</option><option>TPU</option><option>ASA</option><option>PA</option><option>CF</option><option>Other</option>
     </select>
-    <select id="iStock" onchange="renderInventory()">
+    <select id="iStock" onchange="renderInv()">
       <option value="">All stock</option>
       <option value="low">Low (&lt;25%)</option>
-      <option value="ok">In stock</option>
+      <option value="ok">OK</option>
     </select>
-    <select id="iSort" onchange="renderInventory()">
-      <option value="name">Name</option>
-      <option value="brand">Brand</option>
-      <option value="remaining">Remaining</option>
-      <option value="cost">Cost</option>
+    <select id="iSort" onchange="renderInv()">
+      <option value="name">Name</option><option value="brand">Brand</option>
+      <option value="remaining">Remaining</option><option value="cost">Cost</option>
     </select>
   </div>
   <div class="count-bar" id="iCount"></div>
@@ -184,88 +204,65 @@
 <div id="pane-add" style="display:none">
   <div class="form-wrap">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.9rem">
-      <span style="font-size:15px;font-weight:500" id="formTitle">Add spool</span>
+      <span style="font-size:15px;font-weight:500;color:var(--dk-text)" id="formTitle">Add spool</span>
       <button class="btn sm" onclick="showTab('inventory')">Cancel</button>
     </div>
     <div class="form-grid">
       <div class="fg full"><label>Filament name</label><input id="fName" type="text" placeholder="e.g. PLA Basic – Jade White"/></div>
-      <div class="fg">
-        <label>Brand</label>
+      <div class="fg"><label>Brand</label>
         <select id="fBrandSel" onchange="toggleCB()">
           <option>BambuLab</option><option>Anycubic</option><option>Sunlu</option><option>Polymaker</option>
           <option>Prusament</option><option>Hatchbox</option><option>eSUN</option><option>Overture</option>
-          <option>Creality</option><option>Elegoo</option><option>Inland</option><option>Matter3D</option>
-          <option>Amolen</option><option>Duramic</option><option>Eryone</option><option>Fiberlogy</option>
-          <option>FormFutura</option><option>Fillamentum</option><option>ColorFabb</option><option>3DXTech</option>
-          <option>Raise3D</option><option>Ultimaker</option><option>Proto-pasta</option><option>Custom...</option>
+          <option>Creality</option><option>Elegoo</option><option>Inland</option><option>Amolen</option>
+          <option>Eryone</option><option>Duramic</option><option>Fiberlogy</option><option>ColorFabb</option>
+          <option>FormFutura</option><option>Fillamentum</option><option>3DXTech</option><option>Ultimaker</option>
+          <option>Raise3D</option><option>Proto-pasta</option><option>Matter3D</option><option>Gizmo Dorks</option>
+          <option>IC3D</option><option>Custom...</option>
         </select>
       </div>
       <div class="fg" id="cbRow" style="display:none"><label>Custom brand</label><input id="fBrandCustom" type="text"/></div>
       <div class="fg"><label>Type</label>
-        <select id="fTypeIn"><option>PLA</option><option>PETG</option><option>ABS</option><option>TPU</option><option>ASA</option><option>PA</option><option>CF</option><option>Other</option></select>
+        <select id="fTypeIn"><option>PLA</option><option>PLA+</option><option>PETG</option><option>ABS</option><option>TPU</option><option>ASA</option><option>PA</option><option>CF</option><option>Other</option></select>
       </div>
-      <div class="fg"><label>Color name</label><input id="fColorName" type="text" placeholder="e.g. Jade White"/></div>
-      <div class="fg"><label>Color swatch</label><input id="fColorHex" type="color" value="#ffffff" style="height:32px;padding:2px 4px;cursor:pointer"/></div>
-      <div class="fg"><label>Size (g)</label>
-        <select id="fSize"><option value="250">250g</option><option value="500">500g</option><option value="1000" selected>1 kg</option><option value="2000">2 kg</option><option value="3000">3 kg</option></select>
+      <div class="fg"><label>Color name</label><input id="fColorName" type="text" placeholder="e.g. Galaxy Black"/></div>
+      <div class="fg"><label>Color swatch</label><input id="fColorHex" type="color" value="#ffffff"/></div>
+      <div class="fg"><label>Size</label>
+        <select id="fSize"><option value="250">250g</option><option value="500">500g</option><option value="750">750g</option><option value="850">850g</option><option value="1000" selected>1 kg</option><option value="2000">2 kg</option><option value="3000">3 kg</option></select>
       </div>
       <div class="fg"><label>Remaining (%)</label><input id="fRemain" type="number" min="0" max="100" value="100"/></div>
       <div class="fg"><label>Cost ($)</label><input id="fCost" type="number" min="0" step="0.01" placeholder="0.00"/></div>
       <div class="fg"><label>Qty</label><input id="fBundle" type="number" min="1" value="1"/></div>
       <div class="fg full"><label>Notes</label><input id="fNotes" type="text" placeholder="Optional notes"/></div>
     </div>
-    <div class="form-actions">
+    <div class="form-acts">
       <button class="btn danger sm" id="delBtn" style="display:none;margin-right:auto" onclick="doDelete()">Remove</button>
       <button class="btn primary" onclick="doSave()">Save spool</button>
     </div>
   </div>
 </div>
+</div>
 
 <script>
-const SK='fil_inv_v4', WK='fil_wish_v4';
-let spools=[], wishlist=[], editId=null, selColorHex=null, selColorName='';
+const SK='fil_inv_v5',WK='fil_wish_v5';
+let spools=[],wishlist=[],editId=null,selHex=null,selName='';
 
-const COLOR_FAMILIES = [
-  {name:'White & cream', swatches:[
-    {hex:'#f8f8f8',label:'Pure white'},{hex:'#f5f5f0',label:'Off white'},{hex:'#fdf6e3',label:'Vanilla cream'},{hex:'#f0ece4',label:'Bone'},{hex:'#e8e0d5',label:'Marble white'},{hex:'#f5f0e8',label:'Pearl'}
-  ]},
-  {name:'Black & charcoal', swatches:[
-    {hex:'#0a0a0a',label:'True black'},{hex:'#1a1a1a',label:'Matte black'},{hex:'#2c2c2a',label:'Charcoal'},{hex:'#1c1c2e',label:'Galaxy black'},{hex:'#1e1e1e',label:'Carbon black'}
-  ]},
-  {name:'Grey', swatches:[
-    {hex:'#c8c8c4',label:'Light grey'},{hex:'#a8a8a0',label:'Silver grey'},{hex:'#888780',label:'Mid grey'},{hex:'#666660',label:'Dark grey'},{hex:'#808080',label:'Urban grey'},{hex:'#d0d0cc',label:'Concrete'}
-  ]},
-  {name:'Red & orange', swatches:[
-    {hex:'#e63946',label:'Signal red'},{hex:'#c0392b',label:'Deep red'},{hex:'#d63b3b',label:'Crimson'},{hex:'#e8472b',label:'Tomato red'},{hex:'#fa6400',label:'Blaze orange'},{hex:'#e07020',label:'Pumpkin'},{hex:'#f4a261',label:'Peach orange'},{hex:'#ff6b00',label:'Prusa orange'}
-  ]},
-  {name:'Yellow & gold', swatches:[
-    {hex:'#f5c842',label:'Sunflower'},{hex:'#f0d060',label:'Lemon yellow'},{hex:'#d4a017',label:'Gold'},{hex:'#b87333',label:'Copper'},{hex:'#c8a000',label:'Dark gold'},{hex:'#ffd700',label:'Bright gold'}
-  ]},
-  {name:'Green', swatches:[
-    {hex:'#5aaf6e',label:'Bambu green'},{hex:'#4caf50',label:'Grass green'},{hex:'#3d8b45',label:'Forest green'},{hex:'#4a6741',label:'Army green'},{hex:'#2d6a4f',label:'Dark green'},{hex:'#74c69d',label:'Mint green'},{hex:'#95d5b2',label:'Sage'},{hex:'#1D9E75',label:'Teal green'}
-  ]},
-  {name:'Blue', swatches:[
-    {hex:'#1a6fc4',label:'Classic blue'},{hex:'#378ADD',label:'Sky blue'},{hex:'#185FA5',label:'Navy blue'},{hex:'#5b8fa8',label:'Slate blue'},{hex:'#4cc9f0',label:'Ice blue'},{hex:'#00AEEF',label:'Cyan blue'},{hex:'#3a86ff',label:'Electric blue'},{hex:'#023e8a',label:'Deep navy'},{hex:'#90e0ef',label:'Baby blue'}
-  ]},
-  {name:'Purple & violet', swatches:[
-    {hex:'#7b2d8b',label:'Deep purple'},{hex:'#9b59b6',label:'Violet'},{hex:'#c77dff',label:'Lavender'},{hex:'#7F77DD',label:'Periwinkle'},{hex:'#534AB7',label:'Indigo'},{hex:'#e0aaff',label:'Pale purple'},{hex:'#6a0572',label:'Plum'}
-  ]},
-  {name:'Pink & rose', swatches:[
-    {hex:'#ff85a1',label:'Hot pink'},{hex:'#f72585',label:'Neon pink'},{hex:'#D4537E',label:'Rose'},{hex:'#b76e79',label:'Dusty rose'},{hex:'#ffb3c6',label:'Blush pink'},{hex:'#ff6b9d',label:'Flamingo'}
-  ]},
-  {name:'Brown & wood', swatches:[
-    {hex:'#8b4513',label:'Saddle brown'},{hex:'#a0522d',label:'Sienna'},{hex:'#c8a882',label:'Tan'},{hex:'#d4a37a',label:'Wood'},{hex:'#6b3a2a',label:'Dark wood'}
-  ]},
-  {name:'Specialty', swatches:[
-    {hex:'#c0c0c0',label:'Silver metallic'},{hex:'#d4af37',label:'Gold metallic'},{hex:'#b76e79',label:'Rose gold'},{hex:'#d0e8f2',label:'Transparent'},{hex:'#ddeef8',label:'Clear PETG'},{hex:'#e8e8ff',label:'Glow in dark'},{hex:'#a8c5da',label:'Translucent blue'},{hex:'#e8c5da',label:'Translucent pink'}
-  ]}
+const COLOR_DIST=62;
+const FAMILIES=[
+  {name:'White',swatches:[{h:'#f8f8f8',l:'Pure white'},{h:'#f5f5f0',l:'Off white'},{h:'#fdf6e3',l:'Vanilla cream'},{h:'#f5f0e8',l:'Pearl'},{h:'#e8e0d5',l:'Marble'},{h:'#f0ece4',l:'Bone'},{h:'#eef5ff',l:'Cold white'}]},
+  {name:'Black',swatches:[{h:'#0a0a0a',l:'True black'},{h:'#1a1a1a',l:'Matte black'},{h:'#2c2c2a',l:'Charcoal'},{h:'#1c1c2e',l:'Galaxy black'},{h:'#1e1e1e',l:'Carbon'}]},
+  {name:'Grey',swatches:[{h:'#d0d0cc',l:'Light grey'},{h:'#b0b0a8',l:'Silver grey'},{h:'#888780',l:'Mid grey'},{h:'#666660',l:'Dark grey'},{h:'#808080',l:'Urban grey'},{h:'#a0a0a0',l:'Cool grey'},{h:'#9a9a90',l:'Warm grey'}]},
+  {name:'Red',swatches:[{h:'#e63946',l:'Signal red'},{h:'#c0392b',l:'Deep red'},{h:'#d63b3b',l:'Crimson'},{h:'#e8472b',l:'Tomato'},{h:'#b22222',l:'Firebrick'},{h:'#ff2d2d',l:'Neon red'},{h:'#8b0000',l:'Dark red'}]},
+  {name:'Orange',swatches:[{h:'#fa6400',l:'Blaze orange'},{h:'#e07020',l:'Pumpkin'},{h:'#f4a261',l:'Peach'},{h:'#ff6b00',l:'Prusa orange'},{h:'#ff8c42',l:'Mango'},{h:'#e85d04',l:'Dark orange'}]},
+  {name:'Yellow',swatches:[{h:'#f5c842',l:'Sunflower'},{h:'#f0d060',l:'Lemon'},{h:'#ffd700',l:'Gold yellow'},{h:'#ffe066',l:'Pastel yellow'},{h:'#f9c80e',l:'Canary'},{h:'#e6c229',l:'Mustard'}]},
+  {name:'Gold/Copper',swatches:[{h:'#d4a017',l:'Gold'},{h:'#b87333',l:'Copper'},{h:'#d4af37',l:'Metallic gold'},{h:'#c8a000',l:'Dark gold'},{h:'#a0750a',l:'Bronze'},{h:'#b76e79',l:'Rose gold'}]},
+  {name:'Green',swatches:[{h:'#5aaf6e',l:'Bambu green'},{h:'#4caf50',l:'Grass'},{h:'#3d8b45',l:'Forest'},{h:'#4a6741',l:'Army'},{h:'#2d6a4f',l:'Dark green'},{h:'#74c69d',l:'Mint'},{h:'#1D9E75',l:'Teal green'},{h:'#b7e4c7',l:'Sage'},{h:'#52b788',l:'Fern'},{h:'#40916c',l:'Emerald'},{h:'#d8f3dc',l:'Pale green'}]},
+  {name:'Teal/Cyan',swatches:[{h:'#00b4d8',l:'Cyan'},{h:'#0096c7',l:'Ocean blue'},{h:'#48cae4',l:'Sky teal'},{h:'#00AEEF',l:'Electric cyan'},{h:'#34d399',l:'Aquamarine'},{h:'#06d6a0',l:'Seafoam'}]},
+  {name:'Blue',swatches:[{h:'#1a6fc4',l:'Classic blue'},{h:'#378ADD',l:'Sky blue'},{h:'#185FA5',l:'Navy'},{h:'#5b8fa8',l:'Slate'},{h:'#4cc9f0',l:'Ice blue'},{h:'#3a86ff',l:'Electric blue'},{h:'#023e8a',l:'Deep navy'},{h:'#90e0ef',l:'Baby blue'},{h:'#4361ee',l:'Royal blue'},{h:'#6a9fb5',l:'Steel blue'},{h:'#264653',l:'Petrol'}]},
+  {name:'Purple',swatches:[{h:'#7b2d8b',l:'Deep purple'},{h:'#9b59b6',l:'Violet'},{h:'#c77dff',l:'Lavender'},{h:'#7F77DD',l:'Periwinkle'},{h:'#534AB7',l:'Indigo'},{h:'#e0aaff',l:'Pale purple'},{h:'#6a0572',l:'Plum'},{h:'#4a0e8f',l:'Ultraviolet'},{h:'#bf5af2',l:'Orchid'}]},
+  {name:'Pink',swatches:[{h:'#ff85a1',l:'Hot pink'},{h:'#f72585',l:'Neon pink'},{h:'#D4537E',l:'Rose'},{h:'#b76e79',l:'Dusty rose'},{h:'#ffb3c6',l:'Blush'},{h:'#ff6b9d',l:'Flamingo'},{h:'#e91e8c',l:'Magenta'},{h:'#f4b8d1',l:'Petal pink'}]},
+  {name:'Brown',swatches:[{h:'#8b4513',l:'Saddle brown'},{h:'#a0522d',l:'Sienna'},{h:'#c8a882',l:'Tan'},{h:'#d4a37a',l:'Wood'},{h:'#6b3a2a',l:'Dark wood'},{h:'#795548',l:'Mocha'}]},
+  {name:'Specialty',swatches:[{h:'#c0c0c0',l:'Silver metallic'},{h:'#d0e8f2',l:'Transparent'},{h:'#ddeef8',l:'Clear PETG'},{h:'#e8e8ff',l:'Glow'},{h:'#a8c5da',l:'Trans blue'},{h:'#e8c5da',l:'Trans pink'},{h:'#c8ffc8',l:'Trans green'},{h:'#ffffd0',l:'Trans yellow'},{h:'#252525',l:'Carbon fiber'}]},
 ];
-
-const COLOR_DIST = 60;
-
-function hexToRgb(h){const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return[r,g,b]}
-function colorDist(h1,h2){const[r1,g1,b1]=hexToRgb(h1),[r2,g2,b2]=hexToRgb(h2);return Math.sqrt((r1-r2)**2+(g1-g2)**2+(b1-b2)**2)}
-function matchesColorFilter(itemHex){if(!selColorHex)return true;return colorDist(itemHex,selColorHex)<COLOR_DIST}
 
 const CATALOG=[
   {brand:'BambuLab',type:'PLA',name:'PLA Basic',color:'White',hex:'#f5f5f0',size:1000,price:24.99,inStock:true,url:'https://bambulab.com'},
@@ -278,83 +275,132 @@ const CATALOG=[
   {brand:'BambuLab',type:'PLA',name:'PLA Basic',color:'Orange',hex:'#fa6400',size:1000,price:24.99,inStock:true,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'PLA',name:'PLA Basic',color:'Pink',hex:'#ff85a1',size:1000,price:24.99,inStock:true,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'PLA',name:'PLA Basic',color:'Grey',hex:'#888780',size:1000,price:24.99,inStock:true,url:'https://bambulab.com'},
+  {brand:'BambuLab',type:'PLA',name:'PLA Basic',color:'Magenta',hex:'#e91e8c',size:1000,price:24.99,inStock:false,url:'https://bambulab.com'},
+  {brand:'BambuLab',type:'PLA',name:'PLA Basic',color:'Teal',hex:'#1D9E75',size:1000,price:24.99,inStock:true,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'PLA',name:'PLA Matte',color:'Matte White',hex:'#f8f8f8',size:1000,price:27.99,inStock:true,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'PLA',name:'PLA Matte',color:'Matte Black',hex:'#2c2c2a',size:1000,price:27.99,inStock:true,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'PLA',name:'PLA Matte',color:'Matte Grey',hex:'#888780',size:1000,price:27.99,inStock:true,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'PLA',name:'PLA Matte',color:'Matte Blue',hex:'#3a5fa0',size:1000,price:27.99,inStock:true,url:'https://bambulab.com'},
-  {brand:'BambuLab',type:'PLA',name:'PLA Matte',color:'Matte Green',hex:'#4a7a50',size:1000,price:27.99,inStock:false,url:'https://bambulab.com'},
+  {brand:'BambuLab',type:'PLA',name:'PLA Matte',color:'Matte Green',hex:'#4a7a50',size:1000,price:27.99,inStock:true,url:'https://bambulab.com'},
+  {brand:'BambuLab',type:'PLA',name:'PLA Matte',color:'Matte Red',hex:'#a83030',size:1000,price:27.99,inStock:false,url:'https://bambulab.com'},
+  {brand:'BambuLab',type:'PLA',name:'PLA Matte',color:'Matte Orange',hex:'#d05a20',size:1000,price:27.99,inStock:true,url:'https://bambulab.com'},
+  {brand:'BambuLab',type:'PLA',name:'PLA Matte',color:'Matte Yellow',hex:'#c8a820',size:1000,price:27.99,inStock:true,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'PLA',name:'PLA Silk',color:'Silk Gold',hex:'#d4a017',size:1000,price:29.99,inStock:true,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'PLA',name:'PLA Silk',color:'Silk Silver',hex:'#c0c0c0',size:1000,price:29.99,inStock:true,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'PLA',name:'PLA Silk',color:'Silk Copper',hex:'#b87333',size:1000,price:29.99,inStock:true,url:'https://bambulab.com'},
-  {brand:'BambuLab',type:'PLA',name:'PLA Silk',color:'Silk Rose Gold',hex:'#b76e79',size:1000,price:29.99,inStock:false,url:'https://bambulab.com'},
+  {brand:'BambuLab',type:'PLA',name:'PLA Silk',color:'Silk Rose Gold',hex:'#b76e79',size:1000,price:29.99,inStock:true,url:'https://bambulab.com'},
+  {brand:'BambuLab',type:'PLA',name:'PLA Silk',color:'Silk Jade',hex:'#34d399',size:1000,price:29.99,inStock:true,url:'https://bambulab.com'},
+  {brand:'BambuLab',type:'PLA',name:'PLA Silk',color:'Silk Purple',hex:'#9b59b6',size:1000,price:29.99,inStock:false,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'PETG',name:'PETG Basic',color:'Transparent',hex:'#d0e8f2',size:1000,price:27.99,inStock:true,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'PETG',name:'PETG Basic',color:'White',hex:'#f0f0f0',size:1000,price:27.99,inStock:true,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'PETG',name:'PETG Basic',color:'Black',hex:'#1a1a1a',size:1000,price:27.99,inStock:true,url:'https://bambulab.com'},
+  {brand:'BambuLab',type:'PETG',name:'PETG Basic',color:'Blue',hex:'#1a6fc4',size:1000,price:27.99,inStock:false,url:'https://bambulab.com'},
+  {brand:'BambuLab',type:'PETG',name:'PETG Basic',color:'Red',hex:'#c0392b',size:1000,price:27.99,inStock:true,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'ABS',name:'ABS',color:'White',hex:'#f5f5f0',size:1000,price:26.99,inStock:true,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'ABS',name:'ABS',color:'Black',hex:'#1a1a1a',size:1000,price:26.99,inStock:true,url:'https://bambulab.com'},
+  {brand:'BambuLab',type:'ABS',name:'ABS',color:'Grey',hex:'#808080',size:1000,price:26.99,inStock:true,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'TPU',name:'TPU 95A',color:'White',hex:'#f5f5f0',size:1000,price:34.99,inStock:true,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'TPU',name:'TPU 95A',color:'Black',hex:'#1a1a1a',size:1000,price:34.99,inStock:true,url:'https://bambulab.com'},
+  {brand:'BambuLab',type:'TPU',name:'TPU 95A',color:'Red',hex:'#e63946',size:1000,price:34.99,inStock:false,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'CF',name:'PLA-CF',color:'Carbon Black',hex:'#1e1e1e',size:1000,price:44.99,inStock:false,url:'https://bambulab.com'},
   {brand:'BambuLab',type:'CF',name:'PETG-CF',color:'Carbon Black',hex:'#252525',size:1000,price:49.99,inStock:true,url:'https://bambulab.com'},
+  {brand:'BambuLab',type:'ASA',name:'ASA',color:'White',hex:'#f8f8f8',size:1000,price:29.99,inStock:true,url:'https://bambulab.com'},
+  {brand:'BambuLab',type:'ASA',name:'ASA',color:'Black',hex:'#1a1a1a',size:1000,price:29.99,inStock:true,url:'https://bambulab.com'},
 
   {brand:'Polymaker',type:'PLA',name:'PolyTerra PLA',color:'Muted Blue',hex:'#5b8fa8',size:1000,price:19.99,inStock:true,url:'https://polymaker.com'},
   {brand:'Polymaker',type:'PLA',name:'PolyTerra PLA',color:'Army Green',hex:'#4a6741',size:1000,price:19.99,inStock:true,url:'https://polymaker.com'},
   {brand:'Polymaker',type:'PLA',name:'PolyTerra PLA',color:'Marble White',hex:'#e8e0d5',size:1000,price:19.99,inStock:true,url:'https://polymaker.com'},
   {brand:'Polymaker',type:'PLA',name:'PolyTerra PLA',color:'Charcoal',hex:'#2c2c2a',size:1000,price:19.99,inStock:true,url:'https://polymaker.com'},
-  {brand:'Polymaker',type:'PLA',name:'PolyTerra PLA',color:'Savannah Orange',hex:'#e07020',size:1000,price:19.99,inStock:false,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'PLA',name:'PolyTerra PLA',color:'Savannah Orange',hex:'#e07020',size:1000,price:19.99,inStock:true,url:'https://polymaker.com'},
   {brand:'Polymaker',type:'PLA',name:'PolyTerra PLA',color:'Forest Green',hex:'#2d6a4f',size:1000,price:19.99,inStock:true,url:'https://polymaker.com'},
   {brand:'Polymaker',type:'PLA',name:'PolyTerra PLA',color:'Pebble Grey',hex:'#888780',size:1000,price:19.99,inStock:true,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'PLA',name:'PolyTerra PLA',color:'Royal Blue',hex:'#4361ee',size:1000,price:19.99,inStock:false,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'PLA',name:'PolyTerra PLA',color:'Lavender Purple',hex:'#c77dff',size:1000,price:19.99,inStock:true,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'PLA',name:'PolyTerra PLA',color:'Candy Pink',hex:'#f4b8d1',size:1000,price:19.99,inStock:true,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'PLA',name:'PolyTerra PLA',color:'Lemon Yellow',hex:'#f0d060',size:1000,price:19.99,inStock:true,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'PLA',name:'PolyTerra PLA',color:'Teal',hex:'#1D9E75',size:1000,price:19.99,inStock:false,url:'https://polymaker.com'},
   {brand:'Polymaker',type:'PLA',name:'PolyLite PLA',color:'Red',hex:'#c0392b',size:1000,price:22.99,inStock:true,url:'https://polymaker.com'},
   {brand:'Polymaker',type:'PLA',name:'PolyLite PLA',color:'White',hex:'#f8f8f8',size:1000,price:22.99,inStock:true,url:'https://polymaker.com'},
   {brand:'Polymaker',type:'PLA',name:'PolyLite PLA',color:'Black',hex:'#1a1a1a',size:1000,price:22.99,inStock:true,url:'https://polymaker.com'},
-  {brand:'Polymaker',type:'PLA',name:'PolyLite PLA',color:'Blue',hex:'#1a6fc4',size:1000,price:22.99,inStock:false,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'PLA',name:'PolyLite PLA',color:'Blue',hex:'#1a6fc4',size:1000,price:22.99,inStock:true,url:'https://polymaker.com'},
   {brand:'Polymaker',type:'PLA',name:'PolyLite PLA',color:'Yellow',hex:'#f5c842',size:1000,price:22.99,inStock:true,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'PLA',name:'PolyLite PLA',color:'Green',hex:'#3d8b45',size:1000,price:22.99,inStock:false,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'PLA',name:'PolyLite PLA',color:'Orange',hex:'#fa6400',size:1000,price:22.99,inStock:true,url:'https://polymaker.com'},
   {brand:'Polymaker',type:'PETG',name:'PolyLite PETG',color:'Clear',hex:'#ddeef8',size:1000,price:24.99,inStock:true,url:'https://polymaker.com'},
   {brand:'Polymaker',type:'PETG',name:'PolyLite PETG',color:'Black',hex:'#1a1a1a',size:1000,price:24.99,inStock:true,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'PETG',name:'PolyLite PETG',color:'Red',hex:'#e63946',size:1000,price:24.99,inStock:true,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'PETG',name:'PolyLite PETG',color:'Blue',hex:'#185FA5',size:1000,price:24.99,inStock:false,url:'https://polymaker.com'},
   {brand:'Polymaker',type:'ASA',name:'PolyLite ASA',color:'White',hex:'#f8f8f8',size:1000,price:25.99,inStock:true,url:'https://polymaker.com'},
   {brand:'Polymaker',type:'ASA',name:'PolyLite ASA',color:'Black',hex:'#1a1a1a',size:1000,price:25.99,inStock:true,url:'https://polymaker.com'},
-  {brand:'Polymaker',type:'ASA',name:'PolyLite ASA',color:'Red',hex:'#c0392b',size:1000,price:25.99,inStock:false,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'ASA',name:'PolyLite ASA',color:'Red',hex:'#c0392b',size:1000,price:25.99,inStock:true,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'ASA',name:'PolyLite ASA',color:'Grey',hex:'#808080',size:1000,price:25.99,inStock:false,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'TPU',name:'PolyFlex TPU90',color:'White',hex:'#f5f5f0',size:750,price:29.99,inStock:true,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'TPU',name:'PolyFlex TPU90',color:'Black',hex:'#1a1a1a',size:750,price:29.99,inStock:true,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'TPU',name:'PolyFlex TPU90',color:'Blue',hex:'#1a6fc4',size:750,price:29.99,inStock:false,url:'https://polymaker.com'},
   {brand:'Polymaker',type:'PA',name:'PolyMide PA6-CF',color:'Black',hex:'#252525',size:500,price:44.99,inStock:false,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'PLA',name:'PolySonic PLA',color:'White',hex:'#f8f8f8',size:1000,price:26.99,inStock:true,url:'https://polymaker.com'},
+  {brand:'Polymaker',type:'PLA',name:'PolySonic PLA',color:'Black',hex:'#1a1a1a',size:1000,price:26.99,inStock:true,url:'https://polymaker.com'},
 
   {brand:'Sunlu',type:'PLA',name:'PLA+',color:'White',hex:'#f5f5f0',size:1000,price:13.99,inStock:true,url:'https://sunlu.com'},
   {brand:'Sunlu',type:'PLA',name:'PLA+',color:'Black',hex:'#1a1a1a',size:1000,price:13.99,inStock:true,url:'https://sunlu.com'},
   {brand:'Sunlu',type:'PLA',name:'PLA+',color:'Red',hex:'#e63946',size:1000,price:13.99,inStock:true,url:'https://sunlu.com'},
   {brand:'Sunlu',type:'PLA',name:'PLA+',color:'Blue',hex:'#1a6fc4',size:1000,price:13.99,inStock:true,url:'https://sunlu.com'},
-  {brand:'Sunlu',type:'PLA',name:'PLA+',color:'Green',hex:'#3d8b45',size:1000,price:13.99,inStock:false,url:'https://sunlu.com'},
+  {brand:'Sunlu',type:'PLA',name:'PLA+',color:'Green',hex:'#3d8b45',size:1000,price:13.99,inStock:true,url:'https://sunlu.com'},
   {brand:'Sunlu',type:'PLA',name:'PLA+',color:'Yellow',hex:'#f5c842',size:1000,price:13.99,inStock:true,url:'https://sunlu.com'},
-  {brand:'Sunlu',type:'PLA',name:'PLA+',color:'Orange',hex:'#fa6400',size:1000,price:13.99,inStock:true,url:'https://sunlu.com'},
+  {brand:'Sunlu',type:'PLA',name:'PLA+',color:'Orange',hex:'#fa6400',size:1000,price:13.99,inStock:false,url:'https://sunlu.com'},
   {brand:'Sunlu',type:'PLA',name:'PLA+',color:'Grey',hex:'#888780',size:1000,price:13.99,inStock:true,url:'https://sunlu.com'},
+  {brand:'Sunlu',type:'PLA',name:'PLA+',color:'Purple',hex:'#7b2d8b',size:1000,price:13.99,inStock:true,url:'https://sunlu.com'},
+  {brand:'Sunlu',type:'PLA',name:'PLA+',color:'Pink',hex:'#ff85a1',size:1000,price:13.99,inStock:true,url:'https://sunlu.com'},
+  {brand:'Sunlu',type:'PLA',name:'PLA+',color:'Teal',hex:'#1D9E75',size:1000,price:13.99,inStock:false,url:'https://sunlu.com'},
+  {brand:'Sunlu',type:'PLA',name:'PLA+',color:'Brown',hex:'#8b4513',size:1000,price:13.99,inStock:true,url:'https://sunlu.com'},
   {brand:'Sunlu',type:'PLA',name:'PLA Silk',color:'Gold',hex:'#d4a017',size:1000,price:16.99,inStock:true,url:'https://sunlu.com'},
   {brand:'Sunlu',type:'PLA',name:'PLA Silk',color:'Silver',hex:'#c0c0c0',size:1000,price:16.99,inStock:true,url:'https://sunlu.com'},
   {brand:'Sunlu',type:'PLA',name:'PLA Silk',color:'Copper',hex:'#b87333',size:1000,price:16.99,inStock:true,url:'https://sunlu.com'},
+  {brand:'Sunlu',type:'PLA',name:'PLA Silk',color:'Rose Gold',hex:'#b76e79',size:1000,price:16.99,inStock:true,url:'https://sunlu.com'},
+  {brand:'Sunlu',type:'PLA',name:'PLA Silk',color:'Purple',hex:'#9b59b6',size:1000,price:16.99,inStock:false,url:'https://sunlu.com'},
+  {brand:'Sunlu',type:'PLA',name:'PLA Silk',color:'Blue',hex:'#4361ee',size:1000,price:16.99,inStock:true,url:'https://sunlu.com'},
   {brand:'Sunlu',type:'PLA',name:'PLA Silk Rainbow',color:'Rainbow',hex:'#D4537E',size:1000,price:17.99,inStock:true,url:'https://sunlu.com'},
   {brand:'Sunlu',type:'PETG',name:'PETG',color:'Transparent',hex:'#d0e8f2',size:1000,price:16.99,inStock:true,url:'https://sunlu.com'},
   {brand:'Sunlu',type:'PETG',name:'PETG',color:'Black',hex:'#1a1a1a',size:1000,price:16.99,inStock:true,url:'https://sunlu.com'},
+  {brand:'Sunlu',type:'PETG',name:'PETG',color:'White',hex:'#f5f5f0',size:1000,price:16.99,inStock:true,url:'https://sunlu.com'},
+  {brand:'Sunlu',type:'PETG',name:'PETG',color:'Red',hex:'#c0392b',size:1000,price:16.99,inStock:false,url:'https://sunlu.com'},
   {brand:'Sunlu',type:'TPU',name:'TPU 95A',color:'Black',hex:'#1a1a1a',size:500,price:15.99,inStock:true,url:'https://sunlu.com'},
-  {brand:'Sunlu',type:'TPU',name:'TPU 95A',color:'White',hex:'#f5f5f0',size:500,price:15.99,inStock:false,url:'https://sunlu.com'},
+  {brand:'Sunlu',type:'TPU',name:'TPU 95A',color:'White',hex:'#f5f5f0',size:500,price:15.99,inStock:true,url:'https://sunlu.com'},
+  {brand:'Sunlu',type:'TPU',name:'TPU 95A',color:'Blue',hex:'#1a6fc4',size:500,price:15.99,inStock:false,url:'https://sunlu.com'},
 
   {brand:'Anycubic',type:'PLA',name:'PLA+',color:'White',hex:'#f5f5f0',size:1000,price:15.99,inStock:true,url:'https://anycubic.com'},
   {brand:'Anycubic',type:'PLA',name:'PLA+',color:'Black',hex:'#1a1a1a',size:1000,price:15.99,inStock:true,url:'https://anycubic.com'},
   {brand:'Anycubic',type:'PLA',name:'PLA+',color:'Red',hex:'#c0392b',size:1000,price:15.99,inStock:true,url:'https://anycubic.com'},
-  {brand:'Anycubic',type:'PLA',name:'PLA+',color:'Blue',hex:'#185FA5',size:1000,price:15.99,inStock:false,url:'https://anycubic.com'},
+  {brand:'Anycubic',type:'PLA',name:'PLA+',color:'Blue',hex:'#185FA5',size:1000,price:15.99,inStock:true,url:'https://anycubic.com'},
   {brand:'Anycubic',type:'PLA',name:'PLA+',color:'Green',hex:'#3d8b45',size:1000,price:15.99,inStock:true,url:'https://anycubic.com'},
+  {brand:'Anycubic',type:'PLA',name:'PLA+',color:'Yellow',hex:'#f5c842',size:1000,price:15.99,inStock:false,url:'https://anycubic.com'},
+  {brand:'Anycubic',type:'PLA',name:'PLA+',color:'Orange',hex:'#fa6400',size:1000,price:15.99,inStock:true,url:'https://anycubic.com'},
+  {brand:'Anycubic',type:'PLA',name:'PLA+',color:'Grey',hex:'#888780',size:1000,price:15.99,inStock:true,url:'https://anycubic.com'},
   {brand:'Anycubic',type:'PLA',name:'PLA Silk',color:'Gold',hex:'#d4a017',size:1000,price:18.99,inStock:true,url:'https://anycubic.com'},
-  {brand:'Anycubic',type:'PLA',name:'PLA Silk',color:'Rose Gold',hex:'#b76e79',size:1000,price:18.99,inStock:true,url:'https://anycubic.com'},
+  {brand:'Anycubic',type:'PLA',name:'PLA Silk',color:'Silver',hex:'#c0c0c0',size:1000,price:18.99,inStock:true,url:'https://anycubic.com'},
+  {brand:'Anycubic',type:'PLA',name:'PLA Silk',color:'Rose Gold',hex:'#b76e79',size:1000,price:18.99,inStock:false,url:'https://anycubic.com'},
   {brand:'Anycubic',type:'ABS',name:'ABS+',color:'Black',hex:'#1a1a1a',size:1000,price:18.99,inStock:true,url:'https://anycubic.com'},
   {brand:'Anycubic',type:'ABS',name:'ABS+',color:'White',hex:'#f5f5f0',size:1000,price:18.99,inStock:true,url:'https://anycubic.com'},
-  {brand:'Anycubic',type:'PETG',name:'PETG',color:'Clear',hex:'#ddeef8',size:1000,price:17.99,inStock:false,url:'https://anycubic.com'},
+  {brand:'Anycubic',type:'ABS',name:'ABS+',color:'Grey',hex:'#808080',size:1000,price:18.99,inStock:true,url:'https://anycubic.com'},
+  {brand:'Anycubic',type:'PETG',name:'PETG',color:'Clear',hex:'#ddeef8',size:1000,price:17.99,inStock:true,url:'https://anycubic.com'},
   {brand:'Anycubic',type:'PETG',name:'PETG',color:'Black',hex:'#1a1a1a',size:1000,price:17.99,inStock:true,url:'https://anycubic.com'},
+  {brand:'Anycubic',type:'PETG',name:'PETG',color:'White',hex:'#f5f5f0',size:1000,price:17.99,inStock:false,url:'https://anycubic.com'},
 
   {brand:'Hatchbox',type:'PLA',name:'PLA',color:'True White',hex:'#f8f8f8',size:1000,price:19.99,inStock:true,url:'https://hatchbox3d.com'},
   {brand:'Hatchbox',type:'PLA',name:'PLA',color:'True Black',hex:'#0a0a0a',size:1000,price:19.99,inStock:true,url:'https://hatchbox3d.com'},
   {brand:'Hatchbox',type:'PLA',name:'PLA',color:'Galaxy Black',hex:'#1c1c2e',size:1000,price:22.99,inStock:true,url:'https://hatchbox3d.com'},
   {brand:'Hatchbox',type:'PLA',name:'PLA',color:'Red',hex:'#e63946',size:1000,price:19.99,inStock:true,url:'https://hatchbox3d.com'},
-  {brand:'Hatchbox',type:'PLA',name:'PLA',color:'Blue',hex:'#1a6fc4',size:1000,price:19.99,inStock:false,url:'https://hatchbox3d.com'},
+  {brand:'Hatchbox',type:'PLA',name:'PLA',color:'Blue',hex:'#1a6fc4',size:1000,price:19.99,inStock:true,url:'https://hatchbox3d.com'},
   {brand:'Hatchbox',type:'PLA',name:'PLA',color:'Orange',hex:'#e8472b',size:1000,price:19.99,inStock:true,url:'https://hatchbox3d.com'},
-  {brand:'Hatchbox',type:'PLA',name:'PLA',color:'Gold',hex:'#d4a017',size:1000,price:19.99,inStock:true,url:'https://hatchbox3d.com'},
+  {brand:'Hatchbox',type:'PLA',name:'PLA',color:'Gold',hex:'#d4a017',size:1000,price:19.99,inStock:false,url:'https://hatchbox3d.com'},
+  {brand:'Hatchbox',type:'PLA',name:'PLA',color:'Green',hex:'#3d8b45',size:1000,price:19.99,inStock:true,url:'https://hatchbox3d.com'},
+  {brand:'Hatchbox',type:'PLA',name:'PLA',color:'Purple',hex:'#7b2d8b',size:1000,price:19.99,inStock:true,url:'https://hatchbox3d.com'},
+  {brand:'Hatchbox',type:'PLA',name:'PLA',color:'Pink',hex:'#ff85a1',size:1000,price:19.99,inStock:false,url:'https://hatchbox3d.com'},
+  {brand:'Hatchbox',type:'PLA',name:'PLA',color:'Teal',hex:'#1D9E75',size:1000,price:19.99,inStock:true,url:'https://hatchbox3d.com'},
   {brand:'Hatchbox',type:'PETG',name:'PETG',color:'Clear',hex:'#ddeef8',size:1000,price:22.99,inStock:true,url:'https://hatchbox3d.com'},
   {brand:'Hatchbox',type:'PETG',name:'PETG',color:'Black',hex:'#1a1a1a',size:1000,price:22.99,inStock:true,url:'https://hatchbox3d.com'},
-  {brand:'Hatchbox',type:'ABS',name:'ABS',color:'White',hex:'#f5f5f0',size:1000,price:21.99,inStock:false,url:'https://hatchbox3d.com'},
+  {brand:'Hatchbox',type:'PETG',name:'PETG',color:'Red',hex:'#c0392b',size:1000,price:22.99,inStock:false,url:'https://hatchbox3d.com'},
+  {brand:'Hatchbox',type:'ABS',name:'ABS',color:'White',hex:'#f5f5f0',size:1000,price:21.99,inStock:true,url:'https://hatchbox3d.com'},
   {brand:'Hatchbox',type:'ABS',name:'ABS',color:'Black',hex:'#1a1a1a',size:1000,price:21.99,inStock:true,url:'https://hatchbox3d.com'},
 
   {brand:'eSUN',type:'PLA',name:'PLA+',color:'Cold White',hex:'#eef5ff',size:1000,price:17.99,inStock:true,url:'https://esun3d.com'},
@@ -363,113 +409,195 @@ const CATALOG=[
   {brand:'eSUN',type:'PLA',name:'PLA+',color:'Blue',hex:'#1a6fc4',size:1000,price:17.99,inStock:false,url:'https://esun3d.com'},
   {brand:'eSUN',type:'PLA',name:'PLA+',color:'Green',hex:'#3d8b45',size:1000,price:17.99,inStock:true,url:'https://esun3d.com'},
   {brand:'eSUN',type:'PLA',name:'PLA+',color:'Yellow',hex:'#f0d060',size:1000,price:17.99,inStock:true,url:'https://esun3d.com'},
+  {brand:'eSUN',type:'PLA',name:'PLA+',color:'Orange',hex:'#fa6400',size:1000,price:17.99,inStock:true,url:'https://esun3d.com'},
+  {brand:'eSUN',type:'PLA',name:'PLA+',color:'Grey',hex:'#888780',size:1000,price:17.99,inStock:false,url:'https://esun3d.com'},
+  {brand:'eSUN',type:'PLA',name:'PLA+',color:'Pink',hex:'#ffb3c6',size:1000,price:17.99,inStock:true,url:'https://esun3d.com'},
+  {brand:'eSUN',type:'PLA',name:'PLA+',color:'Purple',hex:'#7b2d8b',size:1000,price:17.99,inStock:true,url:'https://esun3d.com'},
   {brand:'eSUN',type:'PETG',name:'PETG',color:'Solid Green',hex:'#3d8b45',size:1000,price:19.99,inStock:true,url:'https://esun3d.com'},
+  {brand:'eSUN',type:'PETG',name:'PETG',color:'Clear',hex:'#ddeef8',size:1000,price:19.99,inStock:true,url:'https://esun3d.com'},
+  {brand:'eSUN',type:'PETG',name:'PETG',color:'Black',hex:'#1a1a1a',size:1000,price:19.99,inStock:true,url:'https://esun3d.com'},
   {brand:'eSUN',type:'ABS',name:'ABS+',color:'White',hex:'#f8f8f8',size:1000,price:18.99,inStock:true,url:'https://esun3d.com'},
   {brand:'eSUN',type:'ABS',name:'ABS+',color:'Black',hex:'#1a1a1a',size:1000,price:18.99,inStock:true,url:'https://esun3d.com'},
   {brand:'eSUN',type:'TPU',name:'TPU 95A',color:'Black',hex:'#1a1a1a',size:500,price:21.99,inStock:false,url:'https://esun3d.com'},
+  {brand:'eSUN',type:'TPU',name:'TPU 95A',color:'White',hex:'#f5f5f0',size:500,price:21.99,inStock:true,url:'https://esun3d.com'},
 
   {brand:'Overture',type:'PLA',name:'PLA',color:'White',hex:'#f5f5f0',size:1000,price:16.99,inStock:true,url:'https://overture3d.com'},
   {brand:'Overture',type:'PLA',name:'PLA',color:'Black',hex:'#1a1a1a',size:1000,price:16.99,inStock:true,url:'https://overture3d.com'},
+  {brand:'Overture',type:'PLA',name:'PLA',color:'Red',hex:'#e63946',size:1000,price:16.99,inStock:true,url:'https://overture3d.com'},
+  {brand:'Overture',type:'PLA',name:'PLA',color:'Blue',hex:'#4361ee',size:1000,price:16.99,inStock:false,url:'https://overture3d.com'},
+  {brand:'Overture',type:'PLA',name:'PLA',color:'Green',hex:'#3d8b45',size:1000,price:16.99,inStock:true,url:'https://overture3d.com'},
+  {brand:'Overture',type:'PLA',name:'PLA',color:'Teal',hex:'#1D9E75',size:1000,price:16.99,inStock:true,url:'https://overture3d.com'},
   {brand:'Overture',type:'PLA',name:'PLA Pro',color:'Marble',hex:'#e8e0d5',size:1000,price:19.99,inStock:true,url:'https://overture3d.com'},
-  {brand:'Overture',type:'PLA',name:'PLA',color:'Teal',hex:'#1D9E75',size:1000,price:16.99,inStock:false,url:'https://overture3d.com'},
+  {brand:'Overture',type:'PLA',name:'PLA Pro',color:'Wood',hex:'#d4a37a',size:1000,price:19.99,inStock:false,url:'https://overture3d.com'},
   {brand:'Overture',type:'PETG',name:'PETG',color:'Red',hex:'#c0392b',size:1000,price:18.99,inStock:true,url:'https://overture3d.com'},
   {brand:'Overture',type:'PETG',name:'PETG',color:'Clear',hex:'#ddeef8',size:1000,price:18.99,inStock:true,url:'https://overture3d.com'},
+  {brand:'Overture',type:'PETG',name:'PETG',color:'Black',hex:'#1a1a1a',size:1000,price:18.99,inStock:true,url:'https://overture3d.com'},
+  {brand:'Overture',type:'TPU',name:'TPU',color:'Black',hex:'#1a1a1a',size:500,price:17.99,inStock:true,url:'https://overture3d.com'},
 
   {brand:'Prusament',type:'PLA',name:'PLA',color:'Galaxy Black',hex:'#1c1c2e',size:1000,price:24.99,inStock:true,url:'https://prusament.com'},
   {brand:'Prusament',type:'PLA',name:'PLA',color:'Vanilla White',hex:'#fdf6e3',size:1000,price:22.99,inStock:true,url:'https://prusament.com'},
   {brand:'Prusament',type:'PLA',name:'PLA',color:'Prusa Orange',hex:'#ff6b00',size:1000,price:22.99,inStock:true,url:'https://prusament.com'},
-  {brand:'Prusament',type:'PLA',name:'PLA',color:'Azure Blue',hex:'#3a86ff',size:1000,price:22.99,inStock:false,url:'https://prusament.com'},
+  {brand:'Prusament',type:'PLA',name:'PLA',color:'Azure Blue',hex:'#3a86ff',size:1000,price:22.99,inStock:true,url:'https://prusament.com'},
   {brand:'Prusament',type:'PLA',name:'PLA',color:'Lipstick Red',hex:'#e63946',size:1000,price:22.99,inStock:true,url:'https://prusament.com'},
-  {brand:'Prusament',type:'PLA',name:'PLA',color:'Lime Green',hex:'#74c69d',size:1000,price:22.99,inStock:true,url:'https://prusament.com'},
+  {brand:'Prusament',type:'PLA',name:'PLA',color:'Lime Green',hex:'#74c69d',size:1000,price:22.99,inStock:false,url:'https://prusament.com'},
+  {brand:'Prusament',type:'PLA',name:'PLA',color:'Mystic Brown',hex:'#795548',size:1000,price:22.99,inStock:true,url:'https://prusament.com'},
+  {brand:'Prusament',type:'PLA',name:'PLA',color:'Ultramarine',hex:'#023e8a',size:1000,price:22.99,inStock:true,url:'https://prusament.com'},
+  {brand:'Prusament',type:'PLA',name:'PLA Galaxy',color:'Galaxy Purple',hex:'#534AB7',size:1000,price:26.99,inStock:true,url:'https://prusament.com'},
+  {brand:'Prusament',type:'PLA',name:'PLA Galaxy',color:'Galaxy Silver',hex:'#c0c0c0',size:1000,price:26.99,inStock:false,url:'https://prusament.com'},
   {brand:'Prusament',type:'PETG',name:'PETG',color:'Signal White',hex:'#f8f8f8',size:1000,price:24.99,inStock:true,url:'https://prusament.com'},
   {brand:'Prusament',type:'PETG',name:'PETG',color:'Jet Black',hex:'#0a0a0a',size:1000,price:24.99,inStock:true,url:'https://prusament.com'},
-  {brand:'Prusament',type:'ASA',name:'ASA',color:'Urban Grey',hex:'#808080',size:1000,price:27.99,inStock:false,url:'https://prusament.com'},
+  {brand:'Prusament',type:'PETG',name:'PETG',color:'Clear',hex:'#ddeef8',size:1000,price:24.99,inStock:true,url:'https://prusament.com'},
+  {brand:'Prusament',type:'ASA',name:'ASA',color:'Urban Grey',hex:'#808080',size:1000,price:27.99,inStock:true,url:'https://prusament.com'},
+  {brand:'Prusament',type:'ASA',name:'ASA',color:'Lipstick Red',hex:'#e63946',size:1000,price:27.99,inStock:false,url:'https://prusament.com'},
 
   {brand:'Creality',type:'PLA',name:'Ender PLA',color:'White',hex:'#f5f5f0',size:1000,price:14.99,inStock:true,url:'https://creality.com'},
   {brand:'Creality',type:'PLA',name:'Ender PLA',color:'Black',hex:'#1a1a1a',size:1000,price:14.99,inStock:true,url:'https://creality.com'},
+  {brand:'Creality',type:'PLA',name:'Ender PLA',color:'Red',hex:'#e63946',size:1000,price:14.99,inStock:true,url:'https://creality.com'},
+  {brand:'Creality',type:'PLA',name:'Ender PLA',color:'Blue',hex:'#1a6fc4',size:1000,price:14.99,inStock:false,url:'https://creality.com'},
+  {brand:'Creality',type:'PLA',name:'Ender PLA',color:'Green',hex:'#3d8b45',size:1000,price:14.99,inStock:true,url:'https://creality.com'},
   {brand:'Creality',type:'PLA',name:'Hyper PLA',color:'White',hex:'#f8f8f8',size:1000,price:16.99,inStock:true,url:'https://creality.com'},
   {brand:'Creality',type:'PLA',name:'Hyper PLA',color:'Black',hex:'#1a1a1a',size:1000,price:16.99,inStock:true,url:'https://creality.com'},
+  {brand:'Creality',type:'PLA',name:'Hyper PLA',color:'Grey',hex:'#888780',size:1000,price:16.99,inStock:true,url:'https://creality.com'},
   {brand:'Creality',type:'PETG',name:'Hyper PETG',color:'Clear',hex:'#ddeef8',size:1000,price:17.99,inStock:true,url:'https://creality.com'},
-  {brand:'Creality',type:'CF',name:'PLA-CF',color:'Carbon Black',hex:'#1e1e1e',size:1000,price:34.99,inStock:false,url:'https://creality.com'},
+  {brand:'Creality',type:'PETG',name:'Hyper PETG',color:'Black',hex:'#1a1a1a',size:1000,price:17.99,inStock:false,url:'https://creality.com'},
+  {brand:'Creality',type:'CF',name:'PLA-CF',color:'Carbon Black',hex:'#1e1e1e',size:1000,price:34.99,inStock:true,url:'https://creality.com'},
+  {brand:'Creality',type:'ABS',name:'ABS',color:'White',hex:'#f5f5f0',size:1000,price:16.99,inStock:true,url:'https://creality.com'},
 
   {brand:'Elegoo',type:'PLA',name:'PLA+',color:'White',hex:'#f5f5f0',size:1000,price:14.99,inStock:true,url:'https://elegoo.com'},
   {brand:'Elegoo',type:'PLA',name:'PLA+',color:'Black',hex:'#1a1a1a',size:1000,price:14.99,inStock:true,url:'https://elegoo.com'},
   {brand:'Elegoo',type:'PLA',name:'PLA+',color:'Grey',hex:'#888780',size:1000,price:14.99,inStock:true,url:'https://elegoo.com'},
-  {brand:'Elegoo',type:'PLA',name:'PLA+',color:'Red',hex:'#c0392b',size:1000,price:14.99,inStock:false,url:'https://elegoo.com'},
+  {brand:'Elegoo',type:'PLA',name:'PLA+',color:'Red',hex:'#c0392b',size:1000,price:14.99,inStock:true,url:'https://elegoo.com'},
+  {brand:'Elegoo',type:'PLA',name:'PLA+',color:'Blue',hex:'#1a6fc4',size:1000,price:14.99,inStock:false,url:'https://elegoo.com'},
+  {brand:'Elegoo',type:'PLA',name:'PLA+',color:'Green',hex:'#3d8b45',size:1000,price:14.99,inStock:true,url:'https://elegoo.com'},
+  {brand:'Elegoo',type:'PLA',name:'PLA+',color:'Yellow',hex:'#f5c842',size:1000,price:14.99,inStock:true,url:'https://elegoo.com'},
   {brand:'Elegoo',type:'PETG',name:'PETG',color:'Black',hex:'#1a1a1a',size:1000,price:16.99,inStock:true,url:'https://elegoo.com'},
   {brand:'Elegoo',type:'PETG',name:'PETG',color:'Clear',hex:'#ddeef8',size:1000,price:16.99,inStock:true,url:'https://elegoo.com'},
+  {brand:'Elegoo',type:'PETG',name:'PETG',color:'White',hex:'#f5f5f0',size:1000,price:16.99,inStock:false,url:'https://elegoo.com'},
 
   {brand:'Inland',type:'PLA',name:'PLA+',color:'White',hex:'#f5f5f0',size:1000,price:15.99,inStock:true,url:'https://microcenter.com'},
   {brand:'Inland',type:'PLA',name:'PLA+',color:'Black',hex:'#1a1a1a',size:1000,price:15.99,inStock:true,url:'https://microcenter.com'},
   {brand:'Inland',type:'PLA',name:'PLA+',color:'Red',hex:'#e63946',size:1000,price:15.99,inStock:true,url:'https://microcenter.com'},
-  {brand:'Inland',type:'PLA',name:'PLA+',color:'Blue',hex:'#1a6fc4',size:1000,price:15.99,inStock:false,url:'https://microcenter.com'},
+  {brand:'Inland',type:'PLA',name:'PLA+',color:'Blue',hex:'#1a6fc4',size:1000,price:15.99,inStock:true,url:'https://microcenter.com'},
+  {brand:'Inland',type:'PLA',name:'PLA+',color:'Green',hex:'#3d8b45',size:1000,price:15.99,inStock:false,url:'https://microcenter.com'},
+  {brand:'Inland',type:'PLA',name:'PLA+',color:'Orange',hex:'#fa6400',size:1000,price:15.99,inStock:true,url:'https://microcenter.com'},
   {brand:'Inland',type:'PETG',name:'PETG',color:'Clear',hex:'#ddeef8',size:1000,price:17.99,inStock:true,url:'https://microcenter.com'},
+  {brand:'Inland',type:'PETG',name:'PETG',color:'Black',hex:'#1a1a1a',size:1000,price:17.99,inStock:true,url:'https://microcenter.com'},
 
   {brand:'Amolen',type:'PLA',name:'Silk PLA',color:'Copper',hex:'#b87333',size:1000,price:17.99,inStock:true,url:'https://amolen.com'},
   {brand:'Amolen',type:'PLA',name:'Silk PLA',color:'Gold',hex:'#d4a017',size:1000,price:17.99,inStock:true,url:'https://amolen.com'},
   {brand:'Amolen',type:'PLA',name:'Silk PLA',color:'Silver',hex:'#c0c0c0',size:1000,price:17.99,inStock:true,url:'https://amolen.com'},
   {brand:'Amolen',type:'PLA',name:'Silk PLA',color:'Rose Gold',hex:'#b76e79',size:1000,price:17.99,inStock:false,url:'https://amolen.com'},
+  {brand:'Amolen',type:'PLA',name:'Silk PLA',color:'Bronze',hex:'#a0750a',size:1000,price:17.99,inStock:true,url:'https://amolen.com'},
   {brand:'Amolen',type:'PLA',name:'Glow PLA',color:'Glow Blue',hex:'#e8e8ff',size:500,price:14.99,inStock:true,url:'https://amolen.com'},
-  {brand:'Amolen',type:'PLA',name:'Glow PLA',color:'Glow Green',hex:'#b8ffcc',size:500,price:14.99,inStock:true,url:'https://amolen.com'},
+  {brand:'Amolen',type:'PLA',name:'Glow PLA',color:'Glow Green',hex:'#c8ffc8',size:500,price:14.99,inStock:true,url:'https://amolen.com'},
+  {brand:'Amolen',type:'PLA',name:'Glow PLA',color:'Glow Orange',hex:'#ffe066',size:500,price:14.99,inStock:false,url:'https://amolen.com'},
+  {brand:'Amolen',type:'PLA',name:'Wood PLA',color:'Light Wood',hex:'#c8a882',size:500,price:16.99,inStock:true,url:'https://amolen.com'},
+  {brand:'Amolen',type:'PLA',name:'Wood PLA',color:'Dark Wood',hex:'#6b3a2a',size:500,price:16.99,inStock:true,url:'https://amolen.com'},
+  {brand:'Amolen',type:'PLA',name:'Marble PLA',color:'Marble White',hex:'#e8e0d5',size:500,price:16.99,inStock:true,url:'https://amolen.com'},
 
   {brand:'Eryone',type:'PLA',name:'Silk PLA',color:'Rose Gold',hex:'#b76e79',size:1000,price:16.99,inStock:true,url:'https://eryone3d.com'},
   {brand:'Eryone',type:'PLA',name:'Silk PLA',color:'Galaxy Blue',hex:'#1c1c2e',size:1000,price:16.99,inStock:true,url:'https://eryone3d.com'},
-  {brand:'Eryone',type:'PLA',name:'Marble PLA',color:'Marble White',hex:'#e8e0d5',size:1000,price:16.99,inStock:false,url:'https://eryone3d.com'},
+  {brand:'Eryone',type:'PLA',name:'Silk PLA',color:'Gold',hex:'#d4a017',size:1000,price:16.99,inStock:true,url:'https://eryone3d.com'},
+  {brand:'Eryone',type:'PLA',name:'Silk PLA',color:'Copper',hex:'#b87333',size:1000,price:16.99,inStock:false,url:'https://eryone3d.com'},
+  {brand:'Eryone',type:'PLA',name:'Marble PLA',color:'Marble White',hex:'#e8e0d5',size:1000,price:16.99,inStock:true,url:'https://eryone3d.com'},
+  {brand:'Eryone',type:'PLA',name:'Matte PLA',color:'Matte Black',hex:'#2c2c2a',size:1000,price:17.99,inStock:true,url:'https://eryone3d.com'},
+  {brand:'Eryone',type:'PLA',name:'Matte PLA',color:'Matte Grey',hex:'#666660',size:1000,price:17.99,inStock:true,url:'https://eryone3d.com'},
+  {brand:'Eryone',type:'PLA',name:'Matte PLA',color:'Matte Blue',hex:'#3a5fa0',size:1000,price:17.99,inStock:false,url:'https://eryone3d.com'},
+  {brand:'Eryone',type:'TPU',name:'TPU',color:'Black',hex:'#1a1a1a',size:1000,price:19.99,inStock:true,url:'https://eryone3d.com'},
+  {brand:'Eryone',type:'TPU',name:'TPU',color:'White',hex:'#f5f5f0',size:1000,price:19.99,inStock:true,url:'https://eryone3d.com'},
 
   {brand:'Duramic',type:'PLA',name:'PLA+',color:'White',hex:'#f5f5f0',size:1000,price:14.99,inStock:true,url:'https://duramic3d.com'},
   {brand:'Duramic',type:'PLA',name:'PLA+',color:'Black',hex:'#1a1a1a',size:1000,price:14.99,inStock:true,url:'https://duramic3d.com'},
   {brand:'Duramic',type:'PLA',name:'PLA+',color:'Blue',hex:'#1a6fc4',size:1000,price:14.99,inStock:true,url:'https://duramic3d.com'},
+  {brand:'Duramic',type:'PLA',name:'PLA+',color:'Green',hex:'#3d8b45',size:1000,price:14.99,inStock:false,url:'https://duramic3d.com'},
+  {brand:'Duramic',type:'PLA',name:'PLA+',color:'Red',hex:'#c0392b',size:1000,price:14.99,inStock:true,url:'https://duramic3d.com'},
+  {brand:'Duramic',type:'PETG',name:'PETG',color:'Clear',hex:'#ddeef8',size:1000,price:16.99,inStock:true,url:'https://duramic3d.com'},
+  {brand:'Duramic',type:'PETG',name:'PETG',color:'Black',hex:'#1a1a1a',size:1000,price:16.99,inStock:true,url:'https://duramic3d.com'},
 
-  {brand:'Fiberlogy',type:'PLA',name:'FiberFlex 40D',color:'White',hex:'#f5f5f0',size:850,price:27.99,inStock:true,url:'https://fiberlogy.com'},
-  {brand:'Fiberlogy',type:'PLA',name:'FiberFlex 40D',color:'Black',hex:'#1a1a1a',size:850,price:27.99,inStock:true,url:'https://fiberlogy.com'},
+  {brand:'Fiberlogy',type:'PLA',name:'FiberFlex',color:'White',hex:'#f5f5f0',size:850,price:27.99,inStock:true,url:'https://fiberlogy.com'},
+  {brand:'Fiberlogy',type:'PLA',name:'FiberFlex',color:'Black',hex:'#1a1a1a',size:850,price:27.99,inStock:true,url:'https://fiberlogy.com'},
+  {brand:'Fiberlogy',type:'PLA',name:'FiberFlex',color:'Navy',hex:'#023e8a',size:850,price:27.99,inStock:false,url:'https://fiberlogy.com'},
+  {brand:'Fiberlogy',type:'PLA',name:'FiberFlex',color:'Cerulean',hex:'#5b8fa8',size:850,price:27.99,inStock:true,url:'https://fiberlogy.com'},
+  {brand:'Fiberlogy',type:'PETG',name:'PETG',color:'Clear',hex:'#ddeef8',size:850,price:24.99,inStock:true,url:'https://fiberlogy.com'},
   {brand:'Fiberlogy',type:'PA',name:'PA12',color:'Natural',hex:'#e8dcc8',size:750,price:54.99,inStock:false,url:'https://fiberlogy.com'},
 
   {brand:'ColorFabb',type:'PLA',name:'PLA Economy',color:'White',hex:'#f8f8f8',size:750,price:22.99,inStock:true,url:'https://colorfabb.com'},
   {brand:'ColorFabb',type:'PLA',name:'PLA Economy',color:'Black',hex:'#0a0a0a',size:750,price:22.99,inStock:true,url:'https://colorfabb.com'},
+  {brand:'ColorFabb',type:'PLA',name:'PLA Economy',color:'Red',hex:'#c0392b',size:750,price:22.99,inStock:false,url:'https://colorfabb.com'},
+  {brand:'ColorFabb',type:'PLA',name:'corkFill',color:'Cork Brown',hex:'#c8a882',size:650,price:34.99,inStock:true,url:'https://colorfabb.com'},
+  {brand:'ColorFabb',type:'PLA',name:'woodFill',color:'Light Wood',hex:'#d4a37a',size:650,price:34.99,inStock:true,url:'https://colorfabb.com'},
   {brand:'ColorFabb',type:'CF',name:'XT-CF20',color:'Carbon',hex:'#1e1e1e',size:750,price:59.99,inStock:true,url:'https://colorfabb.com'},
-  {brand:'ColorFabb',type:'PLA',name:'varioShore TPU',color:'Mango',hex:'#f4a261',size:650,price:34.99,inStock:false,url:'https://colorfabb.com'},
-
-  {brand:'Proto-pasta',type:'PLA',name:'Matte Fiber PLA',color:'Radiant Red',hex:'#c0392b',size:500,price:22.99,inStock:true,url:'https://proto-pasta.com'},
-  {brand:'Proto-pasta',type:'PLA',name:'Matte Fiber PLA',color:'Matte Black',hex:'#2c2c2a',size:500,price:22.99,inStock:true,url:'https://proto-pasta.com'},
-  {brand:'Proto-pasta',type:'PLA',name:'High Temp PLA',color:'Blue',hex:'#1a6fc4',size:500,price:24.99,inStock:false,url:'https://proto-pasta.com'},
-  {brand:'Proto-pasta',type:'PLA',name:'Stainless Steel PLA',color:'Metallic Grey',hex:'#808080',size:500,price:34.99,inStock:true,url:'https://proto-pasta.com'},
+  {brand:'ColorFabb',type:'TPU',name:'nGen Flex',color:'Transparent',hex:'#d0e8f2',size:650,price:34.99,inStock:false,url:'https://colorfabb.com'},
 
   {brand:'FormFutura',type:'PLA',name:'EasyFil PLA',color:'White',hex:'#f8f8f8',size:750,price:22.99,inStock:true,url:'https://formfutura.com'},
   {brand:'FormFutura',type:'PLA',name:'EasyFil PLA',color:'Black',hex:'#1a1a1a',size:750,price:22.99,inStock:true,url:'https://formfutura.com'},
   {brand:'FormFutura',type:'PLA',name:'EasyFil PLA',color:'Signal Red',hex:'#e63946',size:750,price:22.99,inStock:false,url:'https://formfutura.com'},
+  {brand:'FormFutura',type:'PLA',name:'EasyFil PLA',color:'Cobalt Blue',hex:'#185FA5',size:750,price:22.99,inStock:true,url:'https://formfutura.com'},
+  {brand:'FormFutura',type:'PETG',name:'Crystal Clear PETG',color:'Clear',hex:'#ddeef8',size:750,price:24.99,inStock:true,url:'https://formfutura.com'},
 
-  {brand:'Fillamentum',type:'PLA',name:'Crystal Clear PLA',color:'Crystal Clear',hex:'#d0e8f2',size:750,price:24.99,inStock:false,url:'https://fillamentum.com'},
   {brand:'Fillamentum',type:'PLA',name:'Extrafill PLA',color:'Traffic White',hex:'#f8f8f8',size:750,price:23.99,inStock:true,url:'https://fillamentum.com'},
   {brand:'Fillamentum',type:'PLA',name:'Extrafill PLA',color:'Vertigo Grey',hex:'#888780',size:750,price:23.99,inStock:true,url:'https://fillamentum.com'},
+  {brand:'Fillamentum',type:'PLA',name:'Extrafill PLA',color:'Burgundy',hex:'#8b0000',size:750,price:23.99,inStock:false,url:'https://fillamentum.com'},
+  {brand:'Fillamentum',type:'PLA',name:'Extrafill PLA',color:'Cobalt Blue',hex:'#185FA5',size:750,price:23.99,inStock:true,url:'https://fillamentum.com'},
+  {brand:'Fillamentum',type:'PLA',name:'Crystal Clear PLA',color:'Crystal Clear',hex:'#d0e8f2',size:750,price:24.99,inStock:true,url:'https://fillamentum.com'},
 
   {brand:'3DXTech',type:'CF',name:'CarbonX CF-PETG',color:'Carbon Black',hex:'#1e1e1e',size:500,price:49.99,inStock:true,url:'https://3dxtech.com'},
   {brand:'3DXTech',type:'CF',name:'CarbonX CF-PLA',color:'Carbon Black',hex:'#252525',size:500,price:44.99,inStock:true,url:'https://3dxtech.com'},
+  {brand:'3DXTech',type:'CF',name:'CarbonX CF-ABS',color:'Carbon Black',hex:'#1e1e1e',size:500,price:54.99,inStock:false,url:'https://3dxtech.com'},
+  {brand:'3DXTech',type:'PA',name:'PA12-CF',color:'Black',hex:'#1a1a1a',size:500,price:64.99,inStock:true,url:'https://3dxtech.com'},
 
   {brand:'Ultimaker',type:'PLA',name:'PLA',color:'Pearl White',hex:'#f5f0e8',size:750,price:34.99,inStock:true,url:'https://ultimaker.com'},
   {brand:'Ultimaker',type:'PLA',name:'PLA',color:'Black',hex:'#1a1a1a',size:750,price:34.99,inStock:true,url:'https://ultimaker.com'},
-  {brand:'Ultimaker',type:'PETG',name:'Tough PLA',color:'White',hex:'#f8f8f8',size:750,price:39.99,inStock:false,url:'https://ultimaker.com'},
+  {brand:'Ultimaker',type:'PLA',name:'PLA',color:'Red',hex:'#e63946',size:750,price:34.99,inStock:true,url:'https://ultimaker.com'},
+  {brand:'Ultimaker',type:'PLA',name:'PLA',color:'Blue',hex:'#1a6fc4',size:750,price:34.99,inStock:false,url:'https://ultimaker.com'},
+  {brand:'Ultimaker',type:'PETG',name:'Tough PLA',color:'White',hex:'#f8f8f8',size:750,price:39.99,inStock:true,url:'https://ultimaker.com'},
+  {brand:'Ultimaker',type:'ABS',name:'ABS',color:'Black',hex:'#1a1a1a',size:750,price:36.99,inStock:true,url:'https://ultimaker.com'},
 
-  {brand:'Raise3D',type:'PA',name:'PA12 CF',color:'Black',hex:'#1a1a1a',size:1000,price:79.99,inStock:false,url:'https://raise3d.com'},
+  {brand:'Proto-pasta',type:'PLA',name:'Matte Fiber PLA',color:'Radiant Red',hex:'#c0392b',size:500,price:22.99,inStock:true,url:'https://proto-pasta.com'},
+  {brand:'Proto-pasta',type:'PLA',name:'Matte Fiber PLA',color:'Matte Black',hex:'#2c2c2a',size:500,price:22.99,inStock:true,url:'https://proto-pasta.com'},
+  {brand:'Proto-pasta',type:'PLA',name:'Matte Fiber PLA',color:'Blue',hex:'#1a6fc4',size:500,price:22.99,inStock:false,url:'https://proto-pasta.com'},
+  {brand:'Proto-pasta',type:'PLA',name:'Stainless Steel PLA',color:'Metallic Grey',hex:'#808080',size:500,price:34.99,inStock:true,url:'https://proto-pasta.com'},
+  {brand:'Proto-pasta',type:'PLA',name:'Magnetic Iron PLA',color:'Iron Black',hex:'#1e1e1e',size:500,price:34.99,inStock:true,url:'https://proto-pasta.com'},
+  {brand:'Proto-pasta',type:'PLA',name:'Conductive PLA',color:'Conductive Black',hex:'#0a0a0a',size:500,price:39.99,inStock:false,url:'https://proto-pasta.com'},
+
   {brand:'Raise3D',type:'PLA',name:'Premium PLA',color:'White',hex:'#f5f5f0',size:1000,price:29.99,inStock:true,url:'https://raise3d.com'},
+  {brand:'Raise3D',type:'PLA',name:'Premium PLA',color:'Black',hex:'#1a1a1a',size:1000,price:29.99,inStock:true,url:'https://raise3d.com'},
+  {brand:'Raise3D',type:'PA',name:'PA12 CF',color:'Black',hex:'#1a1a1a',size:1000,price:79.99,inStock:false,url:'https://raise3d.com'},
+  {brand:'Raise3D',type:'PETG',name:'PETG',color:'Clear',hex:'#ddeef8',size:1000,price:32.99,inStock:true,url:'https://raise3d.com'},
 
   {brand:'Matter3D',type:'PLA',name:'Industrial PLA',color:'White',hex:'#f5f5f0',size:1000,price:18.99,inStock:true,url:'https://matter3d.com'},
   {brand:'Matter3D',type:'PLA',name:'Industrial PLA',color:'Black',hex:'#1a1a1a',size:1000,price:18.99,inStock:true,url:'https://matter3d.com'},
+  {brand:'Matter3D',type:'PLA',name:'Industrial PLA',color:'Red',hex:'#c0392b',size:1000,price:18.99,inStock:false,url:'https://matter3d.com'},
+  {brand:'Matter3D',type:'PLA',name:'Industrial PLA',color:'Blue',hex:'#1a6fc4',size:1000,price:18.99,inStock:true,url:'https://matter3d.com'},
+
+  {brand:'Gizmo Dorks',type:'PLA',name:'PLA',color:'White',hex:'#f8f8f8',size:1000,price:19.99,inStock:true,url:'https://gizmodorks.com'},
+  {brand:'Gizmo Dorks',type:'PLA',name:'PLA',color:'Black',hex:'#1a1a1a',size:1000,price:19.99,inStock:true,url:'https://gizmodorks.com'},
+  {brand:'Gizmo Dorks',type:'PLA',name:'PLA',color:'Neon Green',hex:'#39ff14',size:1000,price:19.99,inStock:true,url:'https://gizmodorks.com'},
+  {brand:'Gizmo Dorks',type:'PLA',name:'PLA',color:'Neon Pink',hex:'#f72585',size:1000,price:19.99,inStock:false,url:'https://gizmodorks.com'},
+  {brand:'Gizmo Dorks',type:'PLA',name:'PLA',color:'Neon Orange',hex:'#ff6b00',size:1000,price:19.99,inStock:true,url:'https://gizmodorks.com'},
+  {brand:'Gizmo Dorks',type:'TPU',name:'Flexible TPU',color:'Clear',hex:'#ddeef8',size:500,price:24.99,inStock:true,url:'https://gizmodorks.com'},
+  {brand:'Gizmo Dorks',type:'PLA',name:'Wood PLA',color:'Natural Wood',hex:'#c8a882',size:500,price:21.99,inStock:true,url:'https://gizmodorks.com'},
+  {brand:'Gizmo Dorks',type:'PLA',name:'Carbon Fiber PLA',color:'Carbon',hex:'#1e1e1e',size:500,price:26.99,inStock:false,url:'https://gizmodorks.com'},
+
+  {brand:'IC3D',type:'PLA',name:'Premium PLA',color:'White',hex:'#f8f8f8',size:1000,price:22.99,inStock:true,url:'https://ic3d.com'},
+  {brand:'IC3D',type:'PLA',name:'Premium PLA',color:'Black',hex:'#1a1a1a',size:1000,price:22.99,inStock:true,url:'https://ic3d.com'},
+  {brand:'IC3D',type:'PLA',name:'Premium PLA',color:'Red',hex:'#e63946',size:1000,price:22.99,inStock:true,url:'https://ic3d.com'},
+  {brand:'IC3D',type:'PLA',name:'Premium PLA',color:'Blue',hex:'#1a6fc4',size:1000,price:22.99,inStock:false,url:'https://ic3d.com'},
+  {brand:'IC3D',type:'ABS',name:'ABS',color:'White',hex:'#f5f5f0',size:1000,price:24.99,inStock:true,url:'https://ic3d.com'},
+  {brand:'IC3D',type:'ABS',name:'ABS',color:'Black',hex:'#1a1a1a',size:1000,price:24.99,inStock:true,url:'https://ic3d.com'},
+  {brand:'IC3D',type:'PETG',name:'PETG',color:'Clear',hex:'#ddeef8',size:1000,price:23.99,inStock:true,url:'https://ic3d.com'},
 ];
 
-const BRAND_CLR={
-  BambuLab:'#4caf50',Anycubic:'#E24B4A',Sunlu:'#378ADD',Polymaker:'#7F77DD',
-  Prusament:'#FF6B00',Hatchbox:'#1D9E75',eSUN:'#D85A30',Overture:'#D4537E',
-  Creality:'#FA6400',Elegoo:'#3366CC',Inland:'#C0392B',Matter3D:'#2C3E50',
-  Amolen:'#B87333',Duramic:'#16A085',Eryone:'#8E44AD',Fiberlogy:'#27AE60',
-  FormFutura:'#2980B9',Fillamentum:'#E67E22',ColorFabb:'#E74C3C',
-  '3DXTech':'#2C3E50',Raise3D:'#8E44AD',Ultimaker:'#00AEEF','Proto-pasta':'#C0392B'
-};
+const BRAND_CLR={BambuLab:'#4caf50',Anycubic:'#E24B4A',Sunlu:'#5b9cf6',Polymaker:'#a78bfa',Prusament:'#f5a623',Hatchbox:'#34d399',eSUN:'#f97316',Overture:'#f472b6',Creality:'#fa6400',Elegoo:'#3b82f6',Inland:'#ef4444',Matter3D:'#64748b',Amolen:'#b87333',Duramic:'#14b8a6',Eryone:'#a855f7',Fiberlogy:'#22c55e',FormFutura:'#3b82f6',Fillamentum:'#f97316',ColorFabb:'#ef4444','3DXTech':'#475569',Raise3D:'#8b5cf6',Ultimaker:'#00b4d8','Proto-pasta':'#dc2626','Gizmo Dorks':'#10b981',IC3D:'#6366f1'};
 
-function bi(b){const c=BRAND_CLR[b]||'#888';return`<div class="brand-icon" style="background:${c}20;color:${c}">${b.slice(0,2).toUpperCase()}</div>`}
-function bc(t){return{PLA:'pla',PETG:'petg',ABS:'abs',TPU:'tpu',ASA:'asa',PA:'pa',CF:'cf'}[t]||'other'}
-function pc(p){return p<15?'#E24B4A':p<30?'#EF9F27':'#1D9E75'}
+function hexToRgb(h){return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)]}
+function cdist(h1,h2){const[r1,g1,b1]=hexToRgb(h1),[r2,g2,b2]=hexToRgb(h2);return Math.sqrt((r1-r2)**2+(g1-g2)**2+(b1-b2)**2)}
+function mch(ih,fh){return cdist(ih,fh)<COLOR_DIST}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2)}
 function sz(s){return s>=1000?(s/1000)+'kg':s+'g'}
+function bc(t){return{PLA:'pla','PLA+':'pla',PETG:'petg',ABS:'abs',TPU:'tpu',ASA:'asa',PA:'pa',CF:'cf'}[t]||'other'}
+function pc(p){return p<15?'#ff5c5c':p<30?'#f5a623':'#3ddc84'}
+function bi(b){const c=BRAND_CLR[b]||'#5b9cf6';return`<div class="brand-ico" style="background:${c}20;color:${c}">${b.slice(0,2).toUpperCase()}</div>`}
 
 async function load(){
   try{const r=await window.storage.get(SK);if(r&&r.value)spools=JSON.parse(r.value)}catch(e){}
@@ -478,151 +606,112 @@ async function load(){
     {id:uid(),name:'PLA Basic',brand:'BambuLab',type:'PLA',color:'Jade White',hex:'#f5f5f0',size:1000,remaining:85,cost:24.99,bundle:1,notes:''},
     {id:uid(),name:'PLA Basic',brand:'BambuLab',type:'PLA',color:'Bambu Green',hex:'#5aaf6e',size:1000,remaining:30,cost:24.99,bundle:1,notes:''},
     {id:uid(),name:'PolyTerra PLA',brand:'Polymaker',type:'PLA',color:'Muted Blue',hex:'#5b8fa8',size:1000,remaining:60,cost:19.99,bundle:1,notes:'Matte'},
-    {id:uid(),name:'PETG',brand:'Sunlu',type:'PETG',color:'Transparent',hex:'#d0e8f2',size:1000,remaining:12,cost:16.99,bundle:3,notes:''},
+    {id:uid(),name:'PETG',brand:'Sunlu',type:'PETG',color:'Transparent',hex:'#d0e8f2',size:1000,remaining:12,cost:16.99,bundle:3,notes:'Low!'},
   ];
-  buildBrandFilter();renderStats();renderShop();renderInventory();renderWishlist();buildFamilySwatches();
+  buildBrandFilter();buildSwatches();renderStats();renderShop();renderInv();renderWishlist();
 }
-
 async function saveS(){try{await window.storage.set(SK,JSON.stringify(spools))}catch(e){}}
 async function saveW(){try{await window.storage.set(WK,JSON.stringify(wishlist))}catch(e){}}
 
 function buildBrandFilter(){
   const brands=[...new Set(CATALOG.map(c=>c.brand))].sort();
-  const el=document.getElementById('sBrand');
-  const cur=el.value;
+  const el=document.getElementById('sBrand'),cur=el.value;
   el.innerHTML='<option value="">All brands</option>'+brands.map(b=>`<option${b===cur?' selected':''}>${b}</option>`).join('');
-  const ib=document.getElementById('iBrand');
-  const ic=ib.value;
+  const ib=document.getElementById('iBrand'),ic=ib.value;
   const mb=[...new Set(spools.map(s=>s.brand))].sort();
   ib.innerHTML='<option value="">All brands</option>'+mb.map(b=>`<option${b===ic?' selected':''}>${b}</option>`).join('');
 }
 
-function buildFamilySwatches(){
-  const el=document.getElementById('family-swatches');
-  el.innerHTML=COLOR_FAMILIES.map(f=>`
-    <div class="color-family-section">
-      <div class="family-label">${f.name}</div>
-      <div class="color-swatches">
-        ${f.swatches.map(s=>{
-          const cnt=CATALOG.filter(c=>matchesColorHex(c.hex,s.hex)).length;
-          return `<div title="${s.label} (${cnt} products)" class="swatch-btn" style="background:${s.hex};border-color:${selColorHex===s.hex?'var(--color-text-primary)':'transparent'}" onclick="setColorFilter('${s.hex}','${s.label}')"></div>`;
-        }).join('')}
-      </div>
+function buildSwatches(){
+  const el=document.getElementById('fam-swatches');
+  el.innerHTML=FAMILIES.map(f=>`
+    <div class="family-row">
+      <div class="family-name">${f.name}</div>
+      <div class="swatches">${f.swatches.map(s=>`<div class="sw${selHex===s.h?' active':''}" style="background:${s.h}" title="${s.l}" onclick="setFilter('${s.h}','${s.l}')"></div>`).join('')}</div>
     </div>
   `).join('');
 }
 
-function matchesColorHex(itemHex,filterHex){
-  const[r1,g1,b1]=hexToRgb(itemHex),[r2,g2,b2]=hexToRgb(filterHex);
-  return Math.sqrt((r1-r2)**2+(g1-g2)**2+(b1-b2)**2)<COLOR_DIST;
+function setFilter(h,n){
+  selHex=selHex===h?null:h;selName=selHex?n:'';
+  document.getElementById('act-lbl').textContent=selHex?`Showing: ${selName} — click swatch again to clear`:'';
+  buildSwatches();renderShop();
 }
-function hexToRgb(h){return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)]}
+function clrFilter(){selHex=null;selName='';document.getElementById('act-lbl').textContent='';buildSwatches();renderShop();}
 
-function setColorFilter(hex,name){
-  if(selColorHex===hex){selColorHex=null;selColorName=''}
-  else{selColorHex=hex;selColorName=name}
-  document.getElementById('active-color-label').textContent=selColorHex?`Showing: ${selColorName}`:'';
-  buildFamilySwatches();renderShop();
-}
-function clearColorFilter(){selColorHex=null;selColorName='';document.getElementById('active-color-label').textContent='';buildFamilySwatches();renderShop()}
-
-function filteredCatalog(){
+function getCatalog(){
   const search=document.getElementById('sSearch').value.toLowerCase();
   const brand=document.getElementById('sBrand').value;
   const type=document.getElementById('sType').value;
   const avail=document.getElementById('sAvail').value;
-  const maxP=parseFloat(document.getElementById('sMaxPrice')?document.getElementById('sMaxPrice').value:document.getElementById('sPrice').value)||Infinity;
+  const maxP=parseFloat(document.getElementById('sPrice').value)||Infinity;
   return CATALOG.filter(c=>{
     if(search&&!`${c.name} ${c.brand} ${c.color} ${c.type}`.toLowerCase().includes(search))return false;
     if(brand&&c.brand!==brand)return false;
-    if(type&&c.type!==type)return false;
+    if(type&&c.type!==type&&!(type==='PLA'&&c.type==='PLA+')&&!(type==='PLA+'&&c.type==='PLA'))return false;
     if(avail==='in'&&!c.inStock)return false;
     if(avail==='out'&&c.inStock)return false;
     if(c.price>maxP)return false;
-    if(selColorHex&&!matchesColorHex(c.hex,selColorHex))return false;
+    if(selHex&&!mch(c.hex,selHex))return false;
     return true;
   });
 }
 
 function renderShop(){
-  const items=filteredCatalog();
+  const items=getCatalog();
   const view=document.getElementById('sView').value;
-  document.getElementById('sCount').textContent=`${items.length} product${items.length!==1?'s':''} from ${[...new Set(items.map(c=>c.brand))].length} brands`;
+  document.getElementById('sCount').textContent=`${items.length} product${items.length!==1?'s':''} across ${[...new Set(items.map(c=>c.brand))].length} brands`;
   const el=document.getElementById('shop-content');
   if(!items.length){el.innerHTML='<div class="empty">No products match your filters.</div>';return}
   if(view==='list'){
-    el.innerHTML=`<div class="shop-list">${items.map(c=>shopRow(c)).join('')}</div>`;
+    el.innerHTML=`<div class="shop-list">${items.map(shopRow).join('')}</div>`;
   } else if(view==='brand'){
-    const byBrand={};
-    items.forEach(c=>{if(!byBrand[c.brand])byBrand[c.brand]=[];byBrand[c.brand].push(c)});
-    el.innerHTML=`<div class="brand-grid">${Object.entries(byBrand).map(([brand,list])=>`
+    const byB={};items.forEach(c=>{if(!byB[c.brand])byB[c.brand]=[];byB[c.brand].push(c)});
+    el.innerHTML=`<div class="brand-grid">${Object.entries(byB).map(([b,list])=>`
       <div class="brand-card">
-        <div class="brand-header">${bi(brand)}<div>
-          <div style="font-size:13px;font-weight:500">${brand}</div>
-          <div style="font-size:11px;color:var(--color-text-secondary)">${list.length} product${list.length!==1?'s':''}</div>
-        </div></div>
-        <div class="brand-swatches">${list.map(c=>`<div class="mini-swatch" style="background:${c.hex}" title="${c.color} – ${c.name} ($${c.price.toFixed(2)}) ${c.inStock?'✓ in stock':'✗ out'}" onclick="selectFromBrand(${JSON.stringify(c).replace(/"/g,'&quot;')})"></div>`).join('')}</div>
-        <div class="shop-list">${list.slice(0,3).map(c=>shopRow(c)).join('')}${list.length>3?`<div style="font-size:11px;color:var(--color-text-secondary);padding:4px 8px">+${list.length-3} more — switch to list view</div>`:''}</div>
-      </div>
-    `).join('')}</div>`;
+        <div class="brand-hdr">${bi(b)}<div><div style="font-size:13px;font-weight:500;color:var(--dk-text)">${b}</div><div style="font-size:11px;color:var(--dk-muted)">${list.length} products</div></div></div>
+        <div class="mini-swatches">${list.map(c=>`<div class="mini-sw" style="background:${c.hex}" title="${c.color} – ${c.name} $${c.price.toFixed(2)} ${c.inStock?'(in stock)':'(out)'}"></div>`).join('')}</div>
+        <div class="shop-list">${list.slice(0,4).map(shopRow).join('')}${list.length>4?`<div style="font-size:11px;color:var(--dk-muted);padding:4px 8px">+${list.length-4} more — use list view</div>`:''}</div>
+      </div>`).join('')}</div>`;
   } else {
-    const byFamily=[];
-    COLOR_FAMILIES.forEach(f=>{
-      const fi=items.filter(c=>f.swatches.some(s=>matchesColorHex(c.hex,s.hex)));
-      if(fi.length)byFamily.push({name:f.name,items:fi});
+    const byF=[];
+    FAMILIES.forEach(f=>{
+      const fi=items.filter(c=>f.swatches.some(s=>mch(c.hex,s.h)));
+      if(fi.length)byF.push({name:f.name,items:fi});
     });
-    const uncat=items.filter(c=>!COLOR_FAMILIES.some(f=>f.swatches.some(s=>matchesColorHex(c.hex,s.hex))));
-    if(uncat.length)byFamily.push({name:'Other',items:uncat});
-    el.innerHTML=byFamily.map(({name,items:gi})=>`
-      <div style="margin-bottom:1.25rem">
-        <div style="font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:7px;text-transform:uppercase;letter-spacing:.04em">${name} <span style="font-weight:400">(${gi.length})</span></div>
-        <div class="shop-list">${gi.map(c=>shopRow(c)).join('')}</div>
-      </div>
-    `).join('');
+    const uncat=items.filter(c=>!FAMILIES.some(f=>f.swatches.some(s=>mch(c.hex,s.h))));
+    if(uncat.length)byF.push({name:'Other',items:uncat});
+    el.innerHTML=byF.map(({name,items:gi})=>`
+      <div style="margin-bottom:1.2rem">
+        <div style="font-size:11px;font-weight:500;color:var(--dk-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">${name} <span style="font-weight:400;opacity:.7">(${gi.length})</span></div>
+        <div class="shop-list">${gi.map(shopRow).join('')}</div>
+      </div>`).join('');
   }
 }
 
 function shopRow(c){
   const esc=JSON.stringify(c).replace(/"/g,'&quot;');
-  return `<div class="shop-row">
-    <div class="swatch-lg" style="background:${c.hex}"></div>
+  return`<div class="shop-row">
+    <div class="sw-lg" style="background:${c.hex}"></div>
     <div class="row-info">
       <div class="row-name">${c.brand} ${c.name} – ${c.color}</div>
       <div class="row-sub">
         <span class="badge ${bc(c.type)}">${c.type}</span>
         <span class="badge ${c.inStock?'in':'out'}">${c.inStock?'In stock':'Out of stock'}</span>
-        <span style="font-size:10px;color:var(--color-text-secondary)">${sz(c.size)}</span>
+        <span style="font-size:10px;color:var(--dk-muted)">${sz(c.size)}</span>
       </div>
     </div>
     <span class="row-price">$${c.price.toFixed(2)}</span>
-    <div class="row-actions">
-      ${c.inStock
-        ?`<button class="btn sm success" onclick="addToInv(${esc})">+ Add</button>`
-        :`<button class="btn sm wish" onclick="addToWish(${esc})">Wishlist</button>`
-      }
+    <div class="row-acts">
+      ${c.inStock?`<button class="btn sm success" onclick="addToInv(${esc})">+ Add</button>`:`<button class="btn sm wish" onclick="addToWish(${esc})">Wishlist</button>`}
     </div>
   </div>`;
 }
 
-function selectFromBrand(c){
-  document.getElementById('sView').value='list';
-  renderShop();
-}
+function addToInv(c){spools.push({id:uid(),name:c.name,brand:c.brand,type:c.type,color:c.color,hex:c.hex,size:c.size,remaining:100,cost:c.price,bundle:1,notes:''});saveS();buildBrandFilter();renderStats();renderInv();showTab('inventory');}
+function addToWish(c){if(wishlist.find(w=>w.brand===c.brand&&w.name===c.name&&w.color===c.color))return;wishlist.push({...c,wid:uid()});saveW();renderStats();renderWishlist();showTab('wishlist');}
 
-function addToInv(c){
-  spools.push({id:uid(),name:c.name,brand:c.brand,type:c.type,color:c.color,hex:c.hex,size:c.size,remaining:100,cost:c.price,bundle:1,notes:''});
-  saveS();buildBrandFilter();renderStats();renderInventory();
-  showTab('inventory');
-}
-
-function addToWish(c){
-  if(wishlist.find(w=>w.brand===c.brand&&w.name===c.name&&w.color===c.color))return;
-  wishlist.push({...c,wid:uid()});
-  saveW();renderStats();renderWishlist();
-  showTab('wishlist');
-}
-
-function renderInventory(){
+function renderInv(){
   const search=document.getElementById('iSearch').value.toLowerCase();
   const brand=document.getElementById('iBrand').value;
   const type=document.getElementById('iType').value;
@@ -641,24 +730,22 @@ function renderInventory(){
   const g=document.getElementById('inv-grid');
   if(!f.length){g.innerHTML='<div class="empty">No spools match your filters.</div>';return}
   g.innerHTML=f.map(s=>{
-    const pct=Math.round(s.remaining);
-    const g2=Math.round(s.size*pct/100);
-    const low=pct<25;
-    return `<div class="inv-card${low?' low':''}">
+    const pct=Math.round(s.remaining),gr=Math.round(s.size*pct/100),low=pct<25;
+    return`<div class="inv-card${low?' low':''}">
       <div class="inv-top">
-        <div class="dot" style="background:${s.hex}"></div>
+        <div class="dot" style="background:${s.hex};width:30px;height:30px"></div>
         <div style="flex:1;min-width:0"><div class="inv-name">${s.name}</div><div class="inv-brand">${s.brand} · ${s.color}</div></div>
         <span class="badge ${bc(s.type)}">${s.type}</span>
       </div>
       <div class="prog"><div class="prog-f" style="width:${pct}%;background:${pc(pct)}"></div></div>
       <div class="inv-meta">
-        <span>Remaining</span><strong>${pct}% (~${g2}g)</strong>
+        <span>Remaining</span><strong>${pct}% (~${gr}g)</strong>
         <span>Size</span><strong>${sz(s.size)}</strong>
         <span>Cost</span><strong>$${((s.cost||0)*(s.bundle||1)).toFixed(2)}</strong>
         <span>$/kg</span><strong>${s.cost&&s.size?'$'+((s.cost/(s.size/1000)).toFixed(2)):'—'}</strong>
       </div>
-      ${s.notes?`<div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:6px;font-style:italic">${s.notes}</div>`:''}
-      <div class="inv-actions">
+      ${s.notes?`<div style="font-size:11px;color:var(--dk-muted);margin-bottom:6px;font-style:italic">${s.notes}</div>`:''}
+      <div class="inv-acts">
         <button class="btn sm" onclick="useSpool('${s.id}')">Use</button>
         <button class="btn sm" onclick="editSpool('${s.id}')">Edit</button>
         <button class="btn sm danger" onclick="delSpool('${s.id}')">Remove</button>
@@ -670,94 +757,44 @@ function renderInventory(){
 function renderWishlist(){
   const g=document.getElementById('wish-list');
   document.getElementById('wCount').textContent=`${wishlist.length} item${wishlist.length!==1?'s':''} on wishlist`;
-  if(!wishlist.length){g.innerHTML='<div class="empty">Browse the shop and wishlist out-of-stock items to track them here.</div>';return}
+  if(!wishlist.length){g.innerHTML='<div class="empty">Browse the shop and add out-of-stock items to track here.</div>';return}
   g.innerHTML=wishlist.map(w=>`
     <div class="wish-item">
-      <div class="dot" style="background:${w.hex};width:28px;height:28px;flex-shrink:0"></div>
+      <div class="dot" style="background:${w.hex};width:28px;height:28px"></div>
       <div style="flex:1;min-width:0">
-        <div style="font-size:13px;font-weight:500">${w.brand} ${w.name} – ${w.color}</div>
-        <div style="display:flex;gap:5px;margin-top:2px;align-items:center;flex-wrap:wrap">
+        <div style="font-size:13px;font-weight:500;color:var(--dk-text)">${w.brand} ${w.name} – ${w.color}</div>
+        <div style="display:flex;gap:5px;margin-top:2px;flex-wrap:wrap">
           <span class="badge ${bc(w.type)}">${w.type}</span>
-          <span style="font-size:11px;color:var(--color-text-secondary)">$${w.price.toFixed(2)} · ${sz(w.size)}</span>
+          <span style="font-size:11px;color:var(--dk-muted)">$${w.price.toFixed(2)} · ${sz(w.size)}</span>
         </div>
       </div>
       <div style="display:flex;gap:5px">
         <a href="${w.url}" class="btn sm">Buy</a>
         <button class="btn sm danger" onclick="rmWish('${w.wid}')">Remove</button>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
 function renderStats(){
   const total=spools.length,low=spools.filter(s=>s.remaining<25).length;
   const val=spools.reduce((a,s)=>a+(s.cost||0)*(s.bundle||1),0);
-  const inStock=CATALOG.filter(c=>c.inStock).length;
   document.getElementById('stats-row').innerHTML=`
     <div class="stat"><div class="stat-l">My spools</div><div class="stat-v">${total}</div></div>
     <div class="stat"><div class="stat-l">Low stock</div><div class="stat-v red">${low}</div></div>
-    <div class="stat"><div class="stat-l">Wishlist</div><div class="stat-v">${wishlist.length}</div></div>
+    <div class="stat"><div class="stat-l">Wishlist</div><div class="stat-v blue">${wishlist.length}</div></div>
     <div class="stat"><div class="stat-l">Inventory value</div><div class="stat-v">$${val.toFixed(0)}</div></div>
-    <div class="stat"><div class="stat-l">Shop in-stock</div><div class="stat-v grn">${inStock}</div></div>
+    <div class="stat"><div class="stat-l">Shop catalog</div><div class="stat-v grn">${CATALOG.filter(c=>c.inStock).length} in stock</div></div>
   `;
 }
 
-function useSpool(id){
-  const s=spools.find(x=>x.id===id);if(!s)return;
-  const a=prompt(`Grams used from "${s.name} – ${s.color}"?\n(~${Math.round(s.size*s.remaining/100)}g remaining)`);
-  if(a===null)return;const g=parseFloat(a);if(isNaN(g)||g<0)return;
-  s.remaining=Math.max(0,Math.round(s.remaining-(g/s.size*100)));saveS();renderStats();renderInventory();
-}
-
-function editSpool(id){
-  const s=spools.find(x=>x.id===id);if(!s)return;
-  editId=id;document.getElementById('formTitle').textContent='Edit spool';document.getElementById('delBtn').style.display='';
-  document.getElementById('fName').value=s.name;
-  const bs=document.getElementById('fBrandSel');
-  if([...bs.options].some(o=>o.value===s.brand)){bs.value=s.brand;document.getElementById('cbRow').style.display='none'}
-  else{bs.value='Custom...';document.getElementById('cbRow').style.display='';document.getElementById('fBrandCustom').value=s.brand}
-  document.getElementById('fTypeIn').value=s.type;
-  document.getElementById('fColorName').value=s.color;
-  document.getElementById('fColorHex').value=s.hex||'#cccccc';
-  document.getElementById('fSize').value=s.size;
-  document.getElementById('fRemain').value=s.remaining;
-  document.getElementById('fCost').value=s.cost||'';
-  document.getElementById('fBundle').value=s.bundle||1;
-  document.getElementById('fNotes').value=s.notes||'';
-  showTab('add');
-}
-
-function delSpool(id){if(!confirm('Remove this spool?'))return;spools=spools.filter(x=>x.id!==id);saveS();buildBrandFilter();renderStats();renderInventory();}
-function doDelete(){if(!editId)return;if(!confirm('Remove this spool?'))return;spools=spools.filter(x=>x.id!==editId);editId=null;saveS();buildBrandFilter();renderStats();renderInventory();showTab('inventory');}
+function useSpool(id){const s=spools.find(x=>x.id===id);if(!s)return;const a=prompt(`Grams used from "${s.name} – ${s.color}"?\n(~${Math.round(s.size*s.remaining/100)}g left)`);if(a===null)return;const g=parseFloat(a);if(isNaN(g)||g<0)return;s.remaining=Math.max(0,Math.round(s.remaining-(g/s.size*100)));saveS();renderStats();renderInv();}
+function editSpool(id){const s=spools.find(x=>x.id===id);if(!s)return;editId=id;document.getElementById('formTitle').textContent='Edit spool';document.getElementById('delBtn').style.display='';document.getElementById('fName').value=s.name;const bs=document.getElementById('fBrandSel');if([...bs.options].some(o=>o.value===s.brand)){bs.value=s.brand;document.getElementById('cbRow').style.display='none'}else{bs.value='Custom...';document.getElementById('cbRow').style.display='';document.getElementById('fBrandCustom').value=s.brand}document.getElementById('fTypeIn').value=s.type;document.getElementById('fColorName').value=s.color;document.getElementById('fColorHex').value=s.hex||'#cccccc';document.getElementById('fSize').value=s.size;document.getElementById('fRemain').value=s.remaining;document.getElementById('fCost').value=s.cost||'';document.getElementById('fBundle').value=s.bundle||1;document.getElementById('fNotes').value=s.notes||'';showTab('add');}
+function delSpool(id){if(!confirm('Remove this spool?'))return;spools=spools.filter(x=>x.id!==id);saveS();buildBrandFilter();renderStats();renderInv();}
+function doDelete(){if(!editId)return;if(!confirm('Remove this spool?'))return;spools=spools.filter(x=>x.id!==editId);editId=null;saveS();buildBrandFilter();renderStats();renderInv();showTab('inventory');}
 function rmWish(wid){wishlist=wishlist.filter(w=>w.wid!==wid);saveW();renderStats();renderWishlist();}
-
-function doSave(){
-  const bv=document.getElementById('fBrandSel').value;
-  const brand=bv==='Custom...'?document.getElementById('fBrandCustom').value.trim():bv;
-  const d={name:document.getElementById('fName').value.trim()||'Unnamed',brand:brand||'Unknown',type:document.getElementById('fTypeIn').value,color:document.getElementById('fColorName').value.trim()||'Unknown',hex:document.getElementById('fColorHex').value,size:parseInt(document.getElementById('fSize').value),remaining:Math.max(0,Math.min(100,parseFloat(document.getElementById('fRemain').value)||0)),cost:parseFloat(document.getElementById('fCost').value)||0,bundle:parseInt(document.getElementById('fBundle').value)||1,notes:document.getElementById('fNotes').value.trim()};
-  if(editId){const i=spools.findIndex(x=>x.id===editId);if(i>=0)spools[i]={...d,id:editId}}else spools.push({...d,id:uid()});
-  editId=null;saveS();buildBrandFilter();renderStats();renderInventory();showTab('inventory');
-}
-
-function doExportCSV(){
-  const rows=[['Brand','Name','Type','Color','Size(g)','Remaining(%)','Cost($)','Bundle','$/kg','Notes']];
-  spools.forEach(s=>rows.push([s.brand,s.name,s.type,s.color,s.size,s.remaining,s.cost||0,s.bundle||1,s.cost&&s.size?((s.cost/(s.size/1000)).toFixed(2)):'',s.notes||'']));
-  const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
-  const b=new Blob([csv],{type:'text/csv'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='filament_inventory.csv';a.click();URL.revokeObjectURL(u);
-}
-
+function doSave(){const bv=document.getElementById('fBrandSel').value,brand=bv==='Custom...'?document.getElementById('fBrandCustom').value.trim():bv;const d={name:document.getElementById('fName').value.trim()||'Unnamed',brand:brand||'Unknown',type:document.getElementById('fTypeIn').value,color:document.getElementById('fColorName').value.trim()||'Unknown',hex:document.getElementById('fColorHex').value,size:parseInt(document.getElementById('fSize').value),remaining:Math.max(0,Math.min(100,parseFloat(document.getElementById('fRemain').value)||0)),cost:parseFloat(document.getElementById('fCost').value)||0,bundle:parseInt(document.getElementById('fBundle').value)||1,notes:document.getElementById('fNotes').value.trim()};if(editId){const i=spools.findIndex(x=>x.id===editId);if(i>=0)spools[i]={...d,id:editId}}else spools.push({...d,id:uid()});editId=null;saveS();buildBrandFilter();renderStats();renderInv();showTab('inventory');}
 function toggleCB(){document.getElementById('cbRow').style.display=document.getElementById('fBrandSel').value==='Custom...'?'':'none'}
-
-function showTab(tab){
-  ['shop','inventory','wishlist','add'].forEach(t=>{
-    document.getElementById('pane-'+t).style.display=t===tab?'':'none';
-    const el=document.getElementById('t-'+t);if(el)el.classList.toggle('active',t===tab);
-  });
-  if(tab==='add'&&!editId){document.getElementById('formTitle').textContent='Add spool';document.getElementById('delBtn').style.display='none';editId=null;}
-  if(tab==='shop'){buildFamilySwatches();}
-}
-
-document.getElementById('sPrice')||0;
-
+function doCSV(){const rows=[['Brand','Name','Type','Color','Size(g)','Remaining(%)','Cost($)','Bundle','$/kg','Notes']];spools.forEach(s=>rows.push([s.brand,s.name,s.type,s.color,s.size,s.remaining,s.cost||0,s.bundle||1,s.cost&&s.size?((s.cost/(s.size/1000)).toFixed(2)):'',s.notes||'']));const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');try{const b=new Blob([csv],{type:'text/csv'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='filament.csv';a.click();URL.revokeObjectURL(u)}catch(e){alert('CSV:\n\n'+csv)}}
+function showTab(tab){['shop','inventory','wishlist','add'].forEach(t=>{document.getElementById('pane-'+t).style.display=t===tab?'':'none';const el=document.getElementById('t-'+t);if(el)el.classList.toggle('active',t===tab)});if(tab==='add'&&!editId){document.getElementById('formTitle').textContent='Add spool';document.getElementById('delBtn').style.display='none';editId=null}if(tab==='shop')buildSwatches();}
 load();
 </script>
